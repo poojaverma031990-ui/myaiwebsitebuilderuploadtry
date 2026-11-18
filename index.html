@@ -1,0 +1,3525 @@
+<!-- QUICKSTART: Pre-built with Akshita's circular portrait, inbuilt music-box audio, and Asia/Kolkata (19 NOV) time engine. -->
+<!-- Works 100% offline as a standalone single-file HTML experience. -->
+<!-- Optional: add #creator to the URL (or tap the top portrait logo 5×) if you ever want to swap photos or re-export. -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Akshita</title>
+  <meta name="description" content="A handcrafted interactive birthday gift experience for Akshita (19 NOV)." />
+  <meta property="og:title" content="Happy Birthday Akshita" />
+  <meta property="og:description" content="A handcrafted interactive birthday gift experience for Akshita (19 NOV)." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Caveat:wght@600;700&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #FFF6E9;
+      --paper: #FFFCF5;
+      --gingham-red: #D63426;
+      --maroon: #8E1F1F;
+      --cake-pink: #E86A92;
+      --amber: #F0A11B;
+      --mint: #2F8F5B;
+      --sky: #2E63D0;
+      --ink: #33201A;
+      --soft-ink: #5C3D33;
+      --font-display: 'Baloo 2', 'Fredoka', 'Comic Sans MS', cursive, sans-serif;
+      --font-hand: 'Caveat', 'Brush Script MT', 'Segoe Script', cursive;
+      --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --spring: cubic-bezier(0.3, 1.4, 0.4, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      background-color: var(--cream);
+      color: var(--ink);
+      font-family: var(--font-body);
+      line-height: 1.5;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--cream);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--cake-pink);
+      border: 2px solid var(--cream);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--gingham-red);
+    }
+
+    button:focus-visible,
+    [tabindex]:focus-visible,
+    input:focus-visible {
+      outline: 3px dashed var(--amber) !important;
+      outline-offset: 3px !important;
+    }
+
+    /* Picnic Gingham Tablecloth Background */
+    .picnic-shell {
+      position: relative;
+      min-height: 100dvh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 64px 12px 24px;
+      background-color: var(--cream);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          rgba(214, 52, 38, 0.52) 0px,
+          rgba(214, 52, 38, 0.52) 22px,
+          transparent 22px,
+          transparent 44px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          rgba(214, 52, 38, 0.52) 0px,
+          rgba(214, 52, 38, 0.52) 22px,
+          transparent 22px,
+          transparent 44px
+        );
+    }
+
+    .grain-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 45;
+    }
+
+    /* Clean Centered Top Bar with Circular Portrait Logo + Full-Width Countdown */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      pointer-events: none;
+    }
+
+    .top-ribbon-pill {
+      pointer-events: auto;
+      background: var(--paper);
+      border: 2.5px solid var(--maroon);
+      box-shadow: 0 3px 0 var(--maroon);
+      color: var(--maroon);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(0.8rem, 2.5vw, 0.96rem);
+      padding: 4px 14px 4px 6px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      max-width: calc(100vw - 20px);
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.15s var(--spring);
+    }
+
+    .top-ribbon-pill:active {
+      transform: translateY(2px);
+    }
+
+    .top-ribbon-pill.is-day {
+      background: var(--amber);
+      color: var(--ink);
+    }
+
+    .top-logo-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--maroon);
+      box-shadow: 0 0 0 2px var(--amber);
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .top-logo-circle img,
+    .top-logo-circle svg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .time-ribbon-text {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Main Stage Card inside Gingham Frame */
+    .stage-card {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 780px;
+      min-height: 470px;
+      background: var(--cream);
+      border: 4px solid var(--maroon);
+      border-radius: 34px;
+      box-shadow:
+        0 10px 0 var(--maroon),
+        0 20px 40px rgba(51, 32, 26, 0.22);
+      padding: clamp(18px, 4vw, 34px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .stage-card::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border: 1.5px dashed rgba(142, 31, 31, 0.22);
+      border-radius: 26px;
+      pointer-events: none;
+    }
+
+    .scene-enter {
+      animation: sceneFadeUp 420ms var(--spring) both;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    @keyframes sceneFadeUp {
+      0% {
+        opacity: 0;
+        transform: translateY(14px) scale(0.985);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Arched SVG Headline */
+    .arched-svg {
+      width: 100%;
+      max-width: 560px;
+      height: auto;
+      overflow: visible;
+      margin-bottom: -8px;
+    }
+
+    .arched-text {
+      font-family: var(--font-display);
+      font-weight: 800;
+      fill: var(--maroon);
+      font-size: 31px;
+      letter-spacing: 0.4px;
+    }
+
+    .arched-text-large {
+      font-family: var(--font-display);
+      font-weight: 800;
+      fill: var(--maroon);
+      font-size: 38px;
+      letter-spacing: 1px;
+    }
+
+    /* Candy Buttons */
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 14px;
+      position: relative;
+      min-height: 58px;
+    }
+
+    .candy-btn {
+      position: relative;
+      min-width: 124px;
+      min-height: 48px;
+      padding: 10px 26px;
+      border-radius: 999px;
+      background: var(--gingham-red);
+      color: var(--cream);
+      border: 3px solid var(--maroon);
+      box-shadow: 0 4px 0 var(--maroon);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.02rem, 2.5vw, 1.22rem);
+      letter-spacing: 0.4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.16s var(--spring), box-shadow 0.16s var(--spring), background-color 0.16s ease;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .candy-btn::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 14px;
+      width: 24px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255, 252, 245, 0.45);
+      pointer-events: none;
+    }
+
+    .candy-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 6px 0 var(--maroon);
+      background: #E03A2B;
+    }
+
+    .candy-btn:active {
+      transform: translateY(3px) scale(0.98);
+      box-shadow: 0 1px 0 var(--maroon);
+    }
+
+    .candy-btn.secondary {
+      background: var(--paper);
+      color: var(--maroon);
+    }
+    .candy-btn.secondary:hover {
+      background: #FFF0D9;
+    }
+
+    .candy-btn.mint {
+      background: var(--mint);
+      color: var(--paper);
+    }
+
+    .candy-btn.amber {
+      background: var(--amber);
+      color: var(--ink);
+    }
+
+    .candy-btn.pink {
+      background: var(--cake-pink);
+      color: var(--paper);
+    }
+
+    .nav-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 1.5px dashed rgba(142, 31, 31, 0.2);
+    }
+
+    .sub-pill-text {
+      font-family: var(--font-hand);
+      font-size: clamp(1.25rem, 3vw, 1.5rem);
+      font-weight: 700;
+      color: var(--maroon);
+      margin: 4px 0;
+    }
+
+    .returning-text {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--mint);
+      margin-top: 2px;
+    }
+
+    .question-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.3rem, 3.5vw, 1.75rem);
+      color: var(--maroon);
+      margin-top: 6px;
+      text-wrap: balance;
+    }
+
+    /* Mascot Stage & Idle Animations */
+    .mascot-wrap {
+      position: relative;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 2px 0 6px;
+      cursor: pointer;
+      user-select: none;
+      min-width: 44px;
+      min-height: 44px;
+    }
+
+    .mascot-svg {
+      width: clamp(135px, 28vw, 175px);
+      height: auto;
+      overflow: visible;
+      filter: drop-shadow(0 6px 0 rgba(51, 32, 26, 0.12));
+    }
+
+    .mascot-dance {
+      animation: mascotBounce 0.9s infinite alternate ease-in-out;
+      transform-origin: center bottom;
+    }
+
+    .mascot-dance .m-arm-l {
+      animation: armWaveL 0.65s infinite alternate ease-in-out;
+      transform-origin: 68px 110px;
+    }
+
+    .mascot-dance .m-arm-r {
+      animation: armWaveR 0.65s infinite alternate ease-in-out;
+      transform-origin: 132px 110px;
+    }
+
+    .mascot-dance .m-head {
+      animation: headTilt 1.3s infinite alternate ease-in-out;
+      transform-origin: 100px 85px;
+    }
+
+    .mascot-tumble {
+      animation: tumbleIn 0.6s var(--spring) both, hangSway 1.6s 0.6s infinite alternate ease-in-out;
+      transform-origin: 100px 100px;
+    }
+
+    .mascot-party {
+      animation: partyJump 0.55s infinite alternate var(--spring);
+      transform-origin: center bottom;
+    }
+
+    .mascot-spin {
+      animation: sillySpin 0.7s var(--spring) both !important;
+    }
+
+    @keyframes mascotBounce {
+      0% { transform: translateY(0) scaleY(1); }
+      100% { transform: translateY(-8px) scaleY(1.03); }
+    }
+    @keyframes armWaveL {
+      0% { transform: rotate(-18deg); }
+      100% { transform: rotate(24deg); }
+    }
+    @keyframes armWaveR {
+      0% { transform: rotate(20deg); }
+      100% { transform: rotate(-22deg); }
+    }
+    @keyframes headTilt {
+      0% { transform: rotate(-4deg); }
+      100% { transform: rotate(5deg); }
+    }
+    @keyframes tumbleIn {
+      0% { transform: translateY(-40px) rotate(0deg) scale(0.8); }
+      100% { transform: translateY(0) rotate(180deg) scale(1); }
+    }
+    @keyframes hangSway {
+      0% { transform: rotate(172deg); }
+      100% { transform: rotate(188deg); }
+    }
+    @keyframes partyJump {
+      0% { transform: translateY(0) rotate(-4deg) scale(1); }
+      100% { transform: translateY(-12px) rotate(4deg) scale(1.05); }
+    }
+    @keyframes sillySpin {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(190deg) scale(1.18); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    /* Step 4: Pop 5 Birthday Balloons (In-Place Tactile Step) */
+    .balloons-stage-grid {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(10px, 2.5vw, 18px);
+      margin: 12px auto 10px;
+      max-width: 620px;
+      width: 100%;
+    }
+
+    .balloon-pop-slot {
+      position: relative;
+      width: 98px;
+      height: 118px;
+      background: transparent;
+      border: none;
+      padding: 4px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s var(--spring);
+    }
+
+    .balloon-pop-slot:hover:not(.is-popped) {
+      transform: translateY(-5px) scale(1.06);
+    }
+
+    .balloon-pop-svg {
+      width: 74px;
+      height: 106px;
+      animation: balloonFloat 2.2s infinite alternate ease-in-out;
+    }
+
+    .balloon-pop-slot:nth-child(even) .balloon-pop-svg {
+      animation-delay: 0.5s;
+    }
+
+    .balloon-pop-slot.is-popped .balloon-pop-svg {
+      display: none;
+    }
+
+    .balloon-blessing-pill {
+      position: absolute;
+      inset: 6px 2px;
+      background: var(--paper);
+      border: 2.5px solid var(--maroon);
+      box-shadow: 0 4px 0 rgba(142, 31, 31, 0.2);
+      border-radius: 16px;
+      padding: 8px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      opacity: 0;
+      transform: scale(0.5);
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.28s var(--spring);
+    }
+
+    .balloon-pop-slot.is-popped .balloon-blessing-pill {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .blessing-emoji {
+      font-size: 1.55rem;
+      line-height: 1;
+    }
+
+    .blessing-label {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.78rem;
+      color: var(--maroon);
+      line-height: 1.15;
+      text-align: center;
+    }
+
+    /* Gift Hub (4 Gifts Grid) */
+    .gifts-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(96px, 138px));
+      gap: clamp(10px, 2.4vw, 20px);
+      align-items: end;
+      justify-content: center;
+      margin: 12px 0 10px;
+      width: 100%;
+    }
+
+    @media (max-width: 560px) {
+      .gifts-grid {
+        grid-template-columns: repeat(2, minmax(112px, 152px));
+        gap: 10px 16px;
+      }
+    }
+
+    .gift-box-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      border-radius: 20px;
+      position: relative;
+      transition: transform 0.2s var(--spring);
+      min-height: 122px;
+    }
+
+    .gift-box-btn:hover {
+      transform: translateY(-6px) scale(1.05);
+    }
+
+    .gift-wiggle {
+      animation: giftWiggle 2.2s infinite ease-in-out;
+      transform-origin: center bottom;
+    }
+    .gift-box-btn:nth-child(2) .gift-wiggle {
+      animation-delay: 0.35s;
+    }
+    .gift-box-btn:nth-child(3) .gift-wiggle {
+      animation-delay: 0.7s;
+    }
+    .gift-box-btn:nth-child(4) .gift-wiggle {
+      animation-delay: 1.05s;
+    }
+
+    @keyframes giftWiggle {
+      0%, 80%, 100% { transform: rotate(0deg); }
+      85% { transform: rotate(-5deg) translateY(-3px); }
+      90% { transform: rotate(5deg) translateY(-3px); }
+      95% { transform: rotate(-3deg); }
+    }
+
+    .gift-status-tag {
+      margin-top: 4px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.84rem;
+      color: var(--maroon);
+    }
+
+    .gift-box-btn.is-opened .gift-status-tag {
+      color: var(--mint);
+    }
+
+    /* Sealed Bonus Envelope */
+    .envelope-card {
+      margin-top: 12px;
+      padding: 12px 18px;
+      border-radius: 20px;
+      background: var(--paper);
+      border: 2.5px solid var(--maroon);
+      box-shadow: 0 4px 0 var(--maroon);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      max-width: 480px;
+      cursor: pointer;
+      transition: transform 0.2s var(--spring);
+    }
+
+    .envelope-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .envelope-card.shake {
+      animation: envShake 0.45s ease-in-out;
+    }
+
+    @keyframes envShake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px) rotate(-2deg); }
+      40% { transform: translateX(6px) rotate(2deg); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+
+    /* Gift 1: Birthday Card layout */
+    .bday-card-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 22px;
+      align-items: center;
+      width: 100%;
+      padding: 8px 4px;
+    }
+
+    @media (max-width: 620px) {
+      .bday-card-layout {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+    }
+
+    .bday-title-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .bday-happy {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.5rem, 4vw, 2.1rem);
+      color: var(--maroon);
+      letter-spacing: 3px;
+      line-height: 1;
+    }
+
+    .bday-script {
+      font-family: var(--font-hand);
+      font-weight: 700;
+      font-size: clamp(3rem, 8vw, 4.4rem);
+      color: var(--gingham-red);
+      line-height: 0.95;
+      margin: 2px 0 10px;
+    }
+
+    .bday-short-msg {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: clamp(0.92rem, 2.2vw, 1.05rem);
+      color: var(--ink);
+      max-width: 32ch;
+      margin-bottom: 14px;
+    }
+
+    .ribbon-banner {
+      display: inline-block;
+      background: var(--gingham-red);
+      color: var(--cream);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.28rem;
+      padding: 5px 28px;
+      border-radius: 8px;
+      border: 2.5px solid var(--maroon);
+      box-shadow: 0 3px 0 var(--maroon);
+      letter-spacing: 1px;
+    }
+
+    /* Polaroid Frame with Circular Portrait Emblem inside */
+    .polaroid-frame {
+      position: relative;
+      background: var(--paper);
+      border: 3px solid var(--maroon);
+      border-radius: 18px;
+      padding: 16px 16px 14px;
+      box-shadow: 0 6px 0 rgba(142, 31, 31, 0.2);
+      transform: rotate(1.5deg);
+      max-width: 235px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .polaroid-tape-tl,
+    .polaroid-tape-br {
+      position: absolute;
+      width: 54px;
+      height: 20px;
+      background-color: var(--cream);
+      background-image:
+        repeating-linear-gradient(45deg, rgba(214,52,38,0.65) 0 6px, transparent 6px 12px),
+        repeating-linear-gradient(-45deg, rgba(214,52,38,0.65) 0 6px, transparent 6px 12px);
+      border: 1.5px solid var(--maroon);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .polaroid-tape-tl {
+      top: -8px;
+      left: -12px;
+      transform: rotate(-32deg);
+    }
+
+    .polaroid-tape-br {
+      bottom: -8px;
+      right: -12px;
+      transform: rotate(-32deg);
+    }
+
+    /* Circular Portrait Emblem (matches her circular portrait crop seamlessly) */
+    .polaroid-img-box {
+      width: 176px;
+      height: 176px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3.5px solid var(--maroon);
+      box-shadow: 0 0 0 4px var(--amber), 0 6px 14px rgba(51, 32, 26, 0.16);
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .polaroid-img-box img,
+    .polaroid-img-box svg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .polaroid-caption {
+      font-family: var(--font-hand);
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--ink);
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    /* Gift 2: Make a Wish Cake & 7 Candles — Planted Directly on the Cake Top Tier! */
+    .cake-stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 8px auto 6px;
+      width: 280px;
+      max-width: 100%;
+    }
+
+    /* Narrower row matching the exact width of the top cake tier so candles sit flush on the frosting */
+    .candles-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      width: 172px;
+      margin: 0 auto -28px;
+      z-index: 4;
+      padding: 0 4px;
+      position: relative;
+    }
+
+    .candle-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 2px 1px 0;
+      width: 22px;
+      min-height: 68px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      position: relative;
+      transition: transform 0.15s var(--spring);
+    }
+
+    .candle-btn:hover {
+      transform: translateY(-2px) scale(1.06);
+    }
+
+    .candle-flame {
+      width: 14px;
+      height: 22px;
+      margin-bottom: -2px;
+      transform-origin: center bottom;
+      animation: flameFlicker 0.45s infinite alternate ease-in-out;
+    }
+
+    .candle-btn:nth-child(even) .candle-flame {
+      animation-duration: 0.55s;
+      animation-delay: 0.15s;
+    }
+
+    .candle-btn.is-out .candle-flame {
+      opacity: 0;
+      transform: scale(0);
+      animation: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .smoke-wisp {
+      position: absolute;
+      top: -4px;
+      width: 16px;
+      height: 26px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .candle-btn.is-out .smoke-wisp {
+      animation: smokeRise 1.1s ease-out forwards;
+    }
+
+    @keyframes flameFlicker {
+      0% { transform: scale(1) rotate(-4deg); }
+      100% { transform: scale(1.1, 0.94) rotate(4deg); }
+    }
+
+    @keyframes smokeRise {
+      0% { opacity: 0.85; transform: translateY(6px) scale(0.7); }
+      100% { opacity: 0; transform: translateY(-22px) scale(1.35); }
+    }
+
+    .candle-stick {
+      width: 12px;
+      height: 40px;
+      border-radius: 4px 4px 2px 2px;
+      border: 2px solid var(--maroon);
+      box-shadow: 0 2px 0 rgba(142, 31, 31, 0.2);
+      background: repeating-linear-gradient(
+        -35deg,
+        var(--paper) 0px,
+        var(--paper) 4px,
+        var(--gingham-red) 4px,
+        var(--gingham-red) 8px
+      );
+    }
+
+    .blow-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .blow-hold-btn {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .blow-progress-fill {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 252, 245, 0.45);
+      width: 0%;
+      pointer-events: none;
+      transition: width 0.06s linear;
+    }
+
+    /* Gift 3: Wishes Line (Steady Pegged Polaroids with In-Place 3D Flip — NO Jumping!) */
+    .clothesline-wrap {
+      position: relative;
+      width: 100%;
+      padding: 18px 4px 14px;
+      overflow-x: auto;
+      overflow-y: visible;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+    }
+
+    .clothesline-wire {
+      position: absolute;
+      top: 24px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--maroon);
+      border-radius: 999px;
+      z-index: 1;
+    }
+
+    .clothesline-track {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 16px;
+      min-width: max-content;
+      margin: 0 auto;
+      padding: 6px 12px 14px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .wish-card-slot {
+      scroll-snap-align: center;
+      width: 158px;
+      height: 208px;
+      perspective: 900px;
+      cursor: pointer;
+      position: relative;
+      background: transparent;
+      border: none;
+      padding: 0;
+      transform-origin: top center;
+    }
+
+    .wooden-peg {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 26px;
+      background: var(--amber);
+      border: 2px solid var(--maroon);
+      border-radius: 4px;
+      z-index: 5;
+      box-shadow: 0 2px 0 rgba(51, 32, 26, 0.25);
+    }
+
+    .wish-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .wish-card-slot.is-flipped .wish-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .wish-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      background: var(--paper);
+      border: 3px solid var(--maroon);
+      border-radius: 14px;
+      padding: 12px 10px 12px;
+      box-shadow: 0 5px 0 rgba(142, 31, 31, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .wish-face.back {
+      transform: rotateY(180deg);
+      background: #FFF3D6;
+      justify-content: center;
+      padding: 14px 12px;
+      text-align: center;
+    }
+
+    .wish-illust-box {
+      width: 122px;
+      height: 122px;
+      border-radius: 12px;
+      border: 2px solid var(--maroon);
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .wish-illust-box.is-circle {
+      border-radius: 50%;
+      border: 2.5px solid var(--maroon);
+      box-shadow: 0 0 0 3px var(--amber);
+    }
+
+    .wish-illust-box img,
+    .wish-illust-box svg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .wish-front-label {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.86rem;
+      color: var(--maroon);
+    }
+
+    .wish-back-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.02rem;
+      color: var(--gingham-red);
+      margin-bottom: 6px;
+    }
+
+    .wish-back-desc {
+      font-family: var(--font-hand);
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--ink);
+      line-height: 1.25;
+    }
+
+    /* Gift 4: The 19 NOV Wish Jar & Star Fortunes (In-Place Interactive Step) */
+    .wish-jar-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      max-width: 580px;
+      margin: 4px auto;
+    }
+
+    .jar-svg-wrap {
+      position: relative;
+      width: 156px;
+      height: 174px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .jar-inner-star {
+      opacity: 0.18;
+      transform-box: fill-box;
+      transform-origin: center;
+      transform: scale(0.65);
+      transition: opacity 0.35s ease, transform 0.4s var(--spring);
+    }
+
+    .jar-inner-star.is-lit {
+      opacity: 1;
+      transform: scale(1);
+      filter: drop-shadow(0 0 6px rgba(240, 161, 27, 0.85));
+    }
+
+    .star-tokens-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .star-token-btn {
+      background: var(--paper);
+      border: 2.5px solid var(--maroon);
+      box-shadow: 0 3px 0 var(--maroon);
+      border-radius: 999px;
+      padding: 6px 13px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.84rem;
+      color: var(--maroon);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: transform 0.18s var(--spring), background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .star-token-btn:hover:not(.is-collected) {
+      transform: translateY(-2px) scale(1.04);
+      background: #FFF3D6;
+    }
+
+    .star-token-btn.is-collected {
+      background: var(--mint);
+      color: var(--cream);
+      border-color: var(--ink);
+      box-shadow: 0 2px 0 var(--ink);
+    }
+
+    .jar-fortune-scroll {
+      width: 100%;
+      background: #FFF3D6;
+      border: 2.5px solid var(--maroon);
+      box-shadow: 0 4px 0 rgba(142, 31, 31, 0.18);
+      border-radius: 18px;
+      padding: 12px 16px;
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--ink);
+      line-height: 1.45;
+    }
+
+    /* Scene 8: Ruled Notebook Paper */
+    .notebook-sheet {
+      position: relative;
+      width: 100%;
+      max-width: 620px;
+      background-color: var(--paper);
+      border: 3px solid var(--maroon);
+      border-radius: 18px;
+      box-shadow: 0 6px 0 var(--maroon);
+      padding: 36px 22px 22px 48px;
+      text-align: left;
+      overflow: hidden;
+    }
+
+    .spiral-holes {
+      position: absolute;
+      top: 10px;
+      left: 18px;
+      right: 18px;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .spiral-hole {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--cream);
+      border: 2px solid var(--maroon);
+    }
+
+    .notebook-sheet::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 34px;
+      width: 2px;
+      background: rgba(214, 52, 38, 0.45);
+      pointer-events: none;
+    }
+
+    .notebook-scroll {
+      max-height: 250px;
+      overflow-y: auto;
+      padding-right: 10px;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 31px,
+        rgba(46, 99, 208, 0.18) 31px,
+        rgba(46, 99, 208, 0.18) 32px
+      );
+      line-height: 32px;
+    }
+
+    .notebook-copy {
+      font-family: var(--font-hand);
+      font-weight: 700;
+      font-size: clamp(1.32rem, 2.8vw, 1.58rem);
+      color: var(--ink);
+      line-height: 32px;
+      white-space: pre-wrap;
+    }
+
+    /* Scene 9: Grand Celebration Finale Stage */
+    .finale-bunting {
+      width: 100%;
+      max-width: 520px;
+      height: 38px;
+      margin-top: -8px;
+      margin-bottom: 6px;
+    }
+
+    .finale-hero-medallion {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(14px, 4vw, 28px);
+      margin: 6px 0 10px;
+    }
+
+    .finale-portrait-ring {
+      position: relative;
+      width: 118px;
+      height: 118px;
+      border-radius: 50%;
+      border: 3.5px solid var(--maroon);
+      box-shadow: 0 0 0 4px var(--amber), 0 8px 20px rgba(142, 31, 31, 0.22);
+      background: var(--paper);
+      overflow: hidden;
+    }
+
+    .finale-portrait-ring img,
+    .finale-portrait-ring svg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .finale-crown-badge {
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-4deg);
+      font-size: 1.7rem;
+      z-index: 4;
+      filter: drop-shadow(0 2px 0 var(--maroon));
+    }
+
+    .floating-balloon-svg {
+      width: 54px;
+      height: 78px;
+      animation: balloonFloat 2.4s infinite alternate ease-in-out;
+    }
+    .floating-balloon-svg.right {
+      animation-delay: 0.7s;
+    }
+
+    @keyframes balloonFloat {
+      0% { transform: translateY(4px) rotate(-4deg); }
+      100% { transform: translateY(-8px) rotate(4deg); }
+    }
+
+    .finale-lead {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.12rem, 3vw, 1.48rem);
+      color: var(--gingham-red);
+      max-width: 38ch;
+      margin-bottom: 8px;
+      text-wrap: balance;
+    }
+
+    .stagger-banner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 3px 8px;
+      margin: 4px 0 6px;
+      max-width: 640px;
+    }
+
+    .stagger-word {
+      display: inline-flex;
+    }
+
+    .pop-letter {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.4rem, 4vw, 2.25rem);
+      color: var(--maroon);
+      text-shadow: 0 2px 0 var(--amber);
+      animation: letterPop 0.45s var(--spring) both;
+    }
+
+    @keyframes letterPop {
+      0% { opacity: 0; transform: translateY(14px) scale(0.4); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .date-stamp {
+      display: inline-block;
+      background: var(--paper);
+      border: 2px solid var(--maroon);
+      box-shadow: 0 2px 0 var(--maroon);
+      border-radius: 999px;
+      padding: 2px 16px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--maroon);
+      letter-spacing: 2px;
+      margin: 4px 0 6px;
+    }
+
+    /* Scene 10: The Heart (Final Screen) */
+    .heart-note-box {
+      background: var(--paper);
+      border: 3px solid var(--maroon);
+      border-radius: 22px;
+      padding: clamp(18px, 3.5vw, 26px);
+      max-width: 560px;
+      box-shadow: 0 6px 0 rgba(142, 31, 31, 0.18);
+      margin-bottom: 14px;
+      position: relative;
+    }
+
+    .heart-note-text {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: clamp(0.96rem, 2.2vw, 1.1rem);
+      color: var(--ink);
+      line-height: 1.6;
+      text-align: left;
+    }
+
+    .insta-glitch-box {
+      background: #FFF3D6;
+      border: 2.5px dashed var(--maroon);
+      border-radius: 18px;
+      padding: 12px 16px;
+      max-width: 560px;
+      width: 100%;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    .insta-glitch-note {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--soft-ink);
+      line-height: 1.48;
+      margin-bottom: 10px;
+    }
+
+    .contact-pills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .contact-chip-btn {
+      background: var(--paper);
+      border: 2px solid var(--maroon);
+      box-shadow: 0 3px 0 var(--maroon);
+      border-radius: 999px;
+      padding: 6px 13px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.84rem;
+      color: var(--ink);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.15s var(--spring), background-color 0.2s ease;
+    }
+
+    .contact-chip-btn:hover {
+      transform: translateY(-2px);
+      background: var(--cream);
+    }
+
+    .contact-chip-btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 1px 0 var(--maroon);
+    }
+
+    .smile-counter {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.02rem;
+      color: var(--mint);
+      margin-top: 8px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Toast Notification */
+    .toast-bubble {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--ink);
+      color: var(--cream);
+      border: 2.5px solid var(--amber);
+      border-radius: 999px;
+      padding: 10px 20px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.95rem;
+      z-index: 60;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s var(--spring);
+      max-width: calc(100vw - 24px);
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .toast-bubble.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Modals */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(51, 32, 26, 0.65);
+      z-index: 55;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-panel {
+      background: var(--paper);
+      border: 4px solid var(--maroon);
+      border-radius: 26px;
+      box-shadow: 0 10px 0 var(--maroon);
+      max-width: 480px;
+      width: 100%;
+      padding: 22px;
+      text-align: center;
+      max-height: 90dvh;
+      overflow-y: auto;
+    }
+
+    /* Wrap Shimmer Screen (Scene 0) */
+    .wrap-shimmer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 32px 16px;
+    }
+
+    .shimmer-bar {
+      width: 180px;
+      height: 12px;
+      border-radius: 999px;
+      border: 2px solid var(--maroon);
+      background: linear-gradient(90deg, var(--cream) 0%, var(--cake-pink) 50%, var(--cream) 100%);
+      background-size: 200% 100%;
+      animation: shimmerSlide 0.9s infinite linear;
+    }
+
+    @keyframes shimmerSlide {
+      0% { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .mascot-dance,
+      .mascot-dance .m-arm-l,
+      .mascot-dance .m-arm-r,
+      .mascot-dance .m-head,
+      .gift-wiggle,
+      .candle-flame,
+      .floating-balloon-svg {
+        animation: none !important;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .picnic-shell {
+        padding: 56px 8px 16px;
+      }
+      .stage-card {
+        padding: 14px 10px;
+        border-radius: 24px;
+        min-height: 430px;
+      }
+      .candy-btn {
+        min-width: 104px;
+        padding: 8px 18px;
+        font-size: 0.98rem;
+      }
+      .gifts-grid {
+        grid-template-columns: repeat(2, minmax(98px, 1fr));
+        gap: 8px;
+      }
+      .balloon-pop-slot {
+        width: 88px;
+        height: 118px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Pre-baked Circular Portrait Slot -->
+  <script id="baked-photo-slot" type="text/plain">data:image/jpeg;base64,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</script>
+
+  <!-- Subtle SVG Noise Texture -->
+  <div class="grain-overlay" aria-hidden="true"></div>
+
+  <!-- Single Celebration Canvas (Balloons, Glowing Stars & Warm Hearts) -->
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+  <!-- Polite Screen-Reader Live Region -->
+  <div id="sr-announcer" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);"></div>
+
+  <!-- Clean Top Bar: Circular Portrait Logo + Live Countdown Ribbon (No ID clutter, No Sound Toggle button) -->
+  <header class="top-bar">
+    <div id="top-ribbon-pill" class="top-ribbon-pill" role="status" aria-live="off" title="Akshita's Birthday Countdown">
+      <div id="top-logo-circle" class="top-logo-circle" aria-hidden="true"></div>
+      <span id="time-ribbon" class="time-ribbon-text">🎂 countdown loading…</span>
+    </div>
+  </header>
+
+  <!-- Main Picnic Gingham Wrapper -->
+  <main class="picnic-shell">
+    <section id="stage-card" class="stage-card" aria-label="Birthday Gift Experience">
+      <!-- Dynamic Scene Content rendered by State Machine -->
+    </section>
+  </main>
+
+  <!-- Bonus 19 NOV Sealed Envelope Modal -->
+  <div id="envelope-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="env-modal-title">
+    <div class="modal-panel">
+      <div style="font-size:2.4rem;margin-bottom:6px;" aria-hidden="true">💌✨</div>
+      <h2 id="env-modal-title" class="question-title" style="margin-bottom:8px;">The 19 NOV Sealed Surprise!</h2>
+      <p class="sub-pill-text" style="color:var(--gingham-red);">"you can wish me on 19_NOV 😊🥳🥰"</p>
+      <p style="font-weight:700;color:var(--ink);margin:10px 0 16px;line-height:1.6;">
+        Surprise unlocked! Your bio asked us to remember the 19th of November, so this little wax-sealed card waited patiently for your actual birthday. May your 19th of November be overflowing with good food, warm wishes, zero stress, and the biggest smile on your face, Akshita! 🥳🎂
+      </p>
+      <button type="button" id="close-envelope-modal" class="candy-btn">
+        Keep Smiling ✨
+      </button>
+    </div>
+  </div>
+
+  <!-- Optional Hidden Creator Mode Panel (#creator or 5x tap on top ribbon) -->
+  <div id="creator-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="creator-modal-title">
+    <div class="modal-panel">
+      <h2 id="creator-modal-title" class="question-title">🎨 Gift Photo &amp; Download</h2>
+      <p style="font-size:0.9rem;color:var(--soft-ink);margin:6px 0 14px;">
+        Akshita's cropped circular portrait is already pre-built! You can download the ready-to-send <strong>happy-birthday-akshita.html</strong> file directly or swap the photo below.
+      </p>
+
+      <div style="margin:12px auto;display:flex;flex-direction:column;align-items:center;gap:10px;">
+        <label for="creator-file-input" class="candy-btn secondary" style="cursor:pointer;">
+          📷 Choose Different Photo (image/*)
+        </label>
+        <input id="creator-file-input" type="file" accept="image/*" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;" />
+      </div>
+
+      <div class="polaroid-frame" style="transform:none;margin:12px auto;max-width:210px;">
+        <div id="creator-preview-box" class="polaroid-img-box"></div>
+        <div class="polaroid-caption">Akshita ✨</div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px;">
+        <button type="button" id="bake-download-btn" class="candy-btn mint">
+          🎁 Bake photo &amp; download final gift
+        </button>
+        <button type="button" id="remove-photo-btn" class="candy-btn secondary">
+          🗑️ Reset photo
+        </button>
+        <button type="button" id="close-creator-btn" class="candy-btn secondary">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast-bubble" class="toast-bubble" role="status" aria-live="polite"></div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* =====================================================================
+       * 1. SAFE LOCALSTORAGE & PRE-BUILT PORTRAIT INITIALIZATION
+       * ===================================================================== */
+      function safeGetLS(key) {
+        try {
+          return window.localStorage.getItem(key);
+        } catch (_e) {
+          return null;
+        }
+      }
+
+      function safeSetLS(key, val) {
+        try {
+          window.localStorage.setItem(key, String(val));
+        } catch (_e) {
+          /* ignore */
+        }
+      }
+
+      function safeRemoveLS(key) {
+        try {
+          window.localStorage.removeItem(key);
+        } catch (_e) {
+          /* ignore */
+        }
+      }
+
+      const bakedSlotEl = document.getElementById('baked-photo-slot');
+      const defaultBakedUri = bakedSlotEl ? bakedSlotEl.textContent.trim() : '';
+      let activePhotoDataUri = safeGetLS('photo') || defaultBakedUri || '';
+
+      const wasVisitedBefore = safeGetLS('visited') === '1';
+      safeSetLS('visited', '1');
+
+      let smilesCount = parseInt(safeGetLS('smiles') || '0', 10);
+      if (Number.isNaN(smilesCount) || smilesCount < 0) smilesCount = 0;
+
+      /* =====================================================================
+       * 2. TIME ENGINE — EARLY / DAY / AFTER + MIDNIGHT ROLLOVER (IST)
+       * ===================================================================== */
+      const TARGET_IST_MS = new Date('2026-11-19T00:00:00+05:30').getTime();
+      const urlParams = new URLSearchParams(window.location.search);
+      const forcedModeParam = (urlParams.get('mode') || '').toUpperCase();
+      const rolloverSecParam = parseInt(urlParams.get('rollover') || '0', 10);
+      const simulationStartMs = Date.now();
+
+      function getEffectiveNowMs() {
+        if (rolloverSecParam > 0) {
+          const elapsed = Date.now() - simulationStartMs;
+          return TARGET_IST_MS - rolloverSecParam * 1000 + elapsed;
+        }
+        return Date.now();
+      }
+
+      function getIstYMD(nowMs) {
+        try {
+          const fmt = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'Asia/Kolkata',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+          });
+          const parts = fmt.formatToParts(new Date(nowMs));
+          const y = Number((parts.find(function (p) { return p.type === 'year'; }) || {}).value || 2026);
+          const m = Number((parts.find(function (p) { return p.type === 'month'; }) || {}).value || 11);
+          const d = Number((parts.find(function (p) { return p.type === 'day'; }) || {}).value || 19);
+          return y * 10000 + m * 100 + d;
+        } catch (_e) {
+          const dt = new Date(nowMs);
+          return dt.getFullYear() * 10000 + (dt.getMonth() + 1) * 100 + dt.getDate();
+        }
+      }
+
+      function computeTimeMode(nowMs) {
+        if (forcedModeParam === 'EARLY' || forcedModeParam === 'DAY' || forcedModeParam === 'AFTER') {
+          return forcedModeParam;
+        }
+        if (rolloverSecParam > 0) {
+          return nowMs < TARGET_IST_MS ? 'EARLY' : 'DAY';
+        }
+        const ymd = getIstYMD(nowMs);
+        if (ymd < 20261119) return 'EARLY';
+        if (ymd === 20261119) return 'DAY';
+        return 'AFTER';
+      }
+
+      function formatCountdown(nowMs) {
+        const diff = Math.max(0, TARGET_IST_MS - nowMs);
+        const totalSec = Math.floor(diff / 1000);
+        const d = Math.floor(totalSec / 86400);
+        const h = Math.floor((totalSec % 86400) / 3600);
+        const m = Math.floor((totalSec % 3600) / 60);
+        const s = totalSec % 60;
+        const pad = function (n) { return String(n).padStart(2, '0'); };
+        return '🎂 ' + d + 'd ' + pad(h) + 'h ' + pad(m) + 'm ' + pad(s) + 's until your day';
+      }
+
+      let currentMode = computeTimeMode(getEffectiveNowMs());
+      const ribbonEl = document.getElementById('time-ribbon');
+      const ribbonPillEl = document.getElementById('top-ribbon-pill');
+
+      function updateRibbonUI() {
+        const nowMs = getEffectiveNowMs();
+        const nextMode = computeTimeMode(nowMs);
+
+        if (currentMode === 'EARLY' && nextMode === 'DAY') {
+          currentMode = 'DAY';
+          triggerMidnightRollover();
+        } else {
+          currentMode = nextMode;
+        }
+
+        if (currentMode === 'EARLY') {
+          ribbonEl.textContent = formatCountdown(nowMs);
+          ribbonPillEl.classList.remove('is-day');
+        } else if (currentMode === 'DAY') {
+          ribbonEl.textContent = "IT'S YOUR DAY, AKSHITA 🎉";
+          ribbonPillEl.classList.add('is-day');
+        } else {
+          ribbonEl.textContent = "the 19th passed, but wishes don't expire 💛";
+          ribbonPillEl.classList.remove('is-day');
+        }
+      }
+
+      function getIntroModeLine() {
+        if (currentMode === 'EARLY') return 'I made something for you… a little early 🙈';
+        if (currentMode === 'DAY') return "it's finally the 19th 🥳";
+        return 'a little late, entirely wholehearted 💛';
+      }
+
+      function getNoteCopy() {
+        if (currentMode === 'EARLY') {
+          return "Dear Akshita — your bio said 'you can wish me on 19_NOV', and I know I'm a little early. Some wishes just couldn't wait. So consider this the trailer; the 19th is the premiere. Until then: may your week be soft, your chai be perfect, your songs hit different, and the countdown feel like excitement, not waiting. Come back on your day — this page has a sealed envelope with your name on it. — a well-wisher";
+        }
+        if (currentMode === 'DAY') {
+          return "Dear Akshita — it's the 19th. The day your bio asked us to remember. Happy birthday! May this year bring you happiness that shows up unannounced, success that feels like yours, peace on the loud days, good health, and countless reasons to smile at your screen. May people be kind, plans work out better than expected, and may you always find a seat by the window on good days. Eat cake first, worries later. ✨ — a well-wisher";
+        }
+        return "a little late, entirely wholehearted — Dear Akshita — it's the 19th. The day your bio asked us to remember. Happy birthday! May this year bring you happiness that shows up unannounced, success that feels like yours, peace on the loud days, good health, and countless reasons to smile at your screen. May people be kind, plans work out better than expected, and may you always find a seat by the window on good days. Eat cake first, worries later. ✨ — a well-wisher";
+      }
+
+      function getHeartCopy() {
+        const clause = currentMode === 'DAY'
+          ? 'right on time.'
+          : "given a little early, because good wishes shouldn't wait.";
+        return 'built this for you 🎂 — no reason, no catch. a stranger on the internet just wanted to make a random person\'s birthday a little happier. ' + clause + ' hope today feels good. — a well-wisher';
+      }
+
+      /* =====================================================================
+       * 3. INBUILT WEBAUDIO MUSIC BOX ("HAPPY BIRTHDAY") & SFX
+       * ===================================================================== */
+      let audioCtx = null;
+      let musicStarted = false;
+      let musicTimerId = null;
+      let melodyIndex = 0;
+
+      const MELODY_NOTES = [
+        [392, 0.75], [392, 0.25], [440, 1], [392, 1], [523, 1], [494, 2],
+        [392, 0.75], [392, 0.25], [440, 1], [392, 1], [587, 1], [523, 2],
+        [392, 0.75], [392, 0.25], [784, 1], [659, 1], [523, 1], [494, 1], [440, 2],
+        [698, 0.75], [698, 0.25], [659, 1], [523, 1], [587, 1], [523, 2.5]
+      ];
+      const BEAT_SEC = 0.4;
+
+      function ensureAudio() {
+        if (!audioCtx) {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) {
+            audioCtx = new AC();
+          }
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume().catch(function () {});
+        }
+      }
+
+      function playMusicBoxNote(freq, durationSec) {
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+        const osc1 = audioCtx.createOscillator();
+        const osc3 = audioCtx.createOscillator();
+        const gain1 = audioCtx.createGain();
+        const gain3 = audioCtx.createGain();
+
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(freq, now);
+
+        osc3.type = 'sine';
+        osc3.frequency.setValueAtTime(freq * 3, now);
+
+        gain1.gain.setValueAtTime(0.001, now);
+        gain1.gain.linearRampToValueAtTime(0.065, now + 0.015);
+        gain1.gain.exponentialRampToValueAtTime(0.0008, now + durationSec * 0.95);
+
+        gain3.gain.setValueAtTime(0.001, now);
+        gain3.gain.linearRampToValueAtTime(0.014, now + 0.01);
+        gain3.gain.exponentialRampToValueAtTime(0.0005, now + durationSec * 0.55);
+
+        osc1.connect(gain1);
+        osc3.connect(gain3);
+        gain1.connect(audioCtx.destination);
+        gain3.connect(audioCtx.destination);
+
+        osc1.start(now);
+        osc3.start(now);
+        osc1.stop(now + durationSec);
+        osc3.stop(now + durationSec * 0.6);
+      }
+
+      function scheduleNextMelodyNote() {
+        if (musicTimerId) {
+          clearTimeout(musicTimerId);
+          musicTimerId = null;
+        }
+        const pair = MELODY_NOTES[melodyIndex];
+        const freq = pair[0];
+        const beats = pair[1];
+        const durSec = beats * BEAT_SEC;
+
+        playMusicBoxNote(freq, durSec);
+        melodyIndex++;
+
+        if (melodyIndex >= MELODY_NOTES.length) {
+          melodyIndex = 0;
+          musicTimerId = setTimeout(scheduleNextMelodyNote, (durSec + 1.5) * 1000);
+        } else {
+          musicTimerId = setTimeout(scheduleNextMelodyNote, durSec * 1000);
+        }
+      }
+
+      function startMusicLoopIfReady() {
+        ensureAudio();
+        if (!musicStarted && audioCtx) {
+          musicStarted = true;
+          scheduleNextMelodyNote();
+        }
+      }
+
+      function playSfx(type) {
+        ensureAudio();
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+
+        if (type === 'pop') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(420, now);
+          osc.frequency.exponentialRampToValueAtTime(680, now + 0.08);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.095);
+        } else if (type === 'wah') {
+          const notes = [350, 320, 290, 250];
+          notes.forEach(function (f, i) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            const t = now + i * 0.14;
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(f, t);
+            osc.frequency.linearRampToValueAtTime(f - 25, t + 0.12);
+            gain.gain.setValueAtTime(0.08, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.13);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(t);
+            osc.stop(t + 0.135);
+          });
+        } else if (type === 'sparkle') {
+          const arp = [523.25, 659.25, 783.99, 1046.5];
+          arp.forEach(function (f) {
+            playMusicBoxNote(f, 0.35);
+          });
+        } else if (type === 'puff') {
+          const bufSize = Math.floor(audioCtx.sampleRate * 0.18);
+          const buffer = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < bufSize; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufSize * 0.4));
+          }
+          const noise = audioCtx.createBufferSource();
+          noise.buffer = buffer;
+          const filter = audioCtx.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.frequency.setValueAtTime(600, now);
+          const gain = audioCtx.createGain();
+          gain.gain.setValueAtTime(0.16, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+          noise.connect(filter);
+          filter.connect(gain);
+          gain.connect(audioCtx.destination);
+          noise.start(now);
+        } else if (type === 'wax') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(220, now);
+          osc.frequency.exponentialRampToValueAtTime(880, now + 0.06);
+          gain.gain.setValueAtTime(0.09, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.075);
+          setTimeout(function () { playSfx('sparkle'); }, 80);
+        } else if (type === 'fanfare') {
+          const chord = [523.25, 659.25, 783.99, 1046.5, 1318.5];
+          chord.forEach(function (f, i) {
+            setTimeout(function () {
+              playMusicBoxNote(f, 0.55);
+            }, i * 75);
+          });
+        } else if (type === 'smile') {
+          const chime = [659.25, 783.99, 1046.5];
+          chime.forEach(function (f, i) {
+            setTimeout(function () {
+              playMusicBoxNote(f, 0.42);
+            }, i * 60);
+          });
+        }
+      }
+
+      /* =====================================================================
+       * 4. CELEBRATION CANVAS: FLOATING BALLOONS, GLOWING STARS & HEARTS
+       *    (No ugly flat flying papers!)
+       * ===================================================================== */
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      let continuousRain = false;
+      let tabHidden = false;
+      let confettiLoopRunning = false;
+      const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const PALETTE_COLORS = ['#D63426', '#E86A92', '#F0A11B', '#2F8F5B', '#2E63D0'];
+
+      function resizeCanvas() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      document.addEventListener('visibilitychange', function () {
+        tabHidden = document.hidden;
+      });
+
+      function ensureConfettiLoop() {
+        if (!confettiLoopRunning) {
+          confettiLoopRunning = true;
+          requestAnimationFrame(tickConfetti);
+        }
+      }
+
+      function spawnCelebrationBurst(count, kind) {
+        if (tabHidden) return;
+        const actualCount = prefersReducedMotion ? Math.min(6, Math.ceil(count * 0.2)) : count;
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        const shapes = kind === 'hearts' ? ['heart', 'star'] : ['star', 'heart'];
+
+        for (let i = 0; i < actualCount; i++) {
+          const shape = shapes[i % shapes.length];
+          particles.push({
+            x: w * 0.5 + (Math.random() - 0.5) * 260,
+            y: h * 0.45 + (Math.random() - 0.5) * 110,
+            vx: (Math.random() - 0.5) * 8.5,
+            vy: -(Math.random() * 6.5 + 2.2),
+            gravity: 0.25,
+            size: Math.random() * 4.5 + 6,
+            color: PALETTE_COLORS[Math.floor(Math.random() * PALETTE_COLORS.length)],
+            rot: (Math.random() - 0.5) * 0.4,
+            vrot: (Math.random() - 0.5) * 0.04,
+            shape: shape,
+            alpha: 0.88,
+            life: 0,
+            maxLife: 88
+          });
+        }
+        ensureConfettiLoop();
+      }
+
+      let rainTick = 0;
+      function drawFourPointStar(c, r) {
+        c.beginPath();
+        for (let i = 0; i < 8; i++) {
+          const rad = i % 2 === 0 ? r : r * 0.38;
+          const ang = (i * Math.PI) / 4;
+          const x = Math.cos(ang) * rad;
+          const y = Math.sin(ang) * rad;
+          if (i === 0) c.moveTo(x, y);
+          else c.lineTo(x, y);
+        }
+        c.closePath();
+        c.fill();
+      }
+
+      function drawHeart(c, s) {
+        c.beginPath();
+        c.moveTo(0, s * 0.45);
+        c.bezierCurveTo(-s, -s * 0.35, -s * 0.55, -s * 1.15, 0, -s * 0.4);
+        c.bezierCurveTo(s * 0.55, -s * 1.15, s, -s * 0.35, 0, s * 0.45);
+        c.fill();
+      }
+
+      function tickConfetti() {
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+        if (continuousRain && !tabHidden && !prefersReducedMotion) {
+          rainTick++;
+          if (rainTick % 16 === 0 && particles.length < 40) {
+            const pick = rainTick % 2 === 0 ? 'star' : 'heart';
+            particles.push({
+              x: Math.random() * window.innerWidth,
+              y: -16,
+              vx: (Math.random() - 0.5) * 1.1,
+              vy: Math.random() * 1.7 + 1.3,
+              gravity: 0,
+              size: 7.5,
+              color: PALETTE_COLORS[Math.floor(Math.random() * PALETTE_COLORS.length)],
+              rot: (Math.random() - 0.5) * 0.25,
+              vrot: (Math.random() - 0.5) * 0.02,
+              shape: pick,
+              alpha: 0.82,
+              life: 0,
+              maxLife: 230
+            });
+          }
+        }
+
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.life++;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += p.gravity;
+          p.vx *= 0.99;
+          p.rot += p.vrot;
+
+          if (p.life > p.maxLife - 20) {
+            p.alpha = Math.max(0, (p.maxLife - p.life) / 20);
+          }
+
+          if (p.life >= p.maxLife || p.y > window.innerHeight + 50 || p.y < -60) {
+            particles.splice(i, 1);
+            continue;
+          }
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.globalAlpha = p.alpha;
+          ctx.fillStyle = p.color;
+
+          if (p.shape === 'heart') {
+            drawHeart(ctx, p.size * 0.8);
+          } else {
+            drawFourPointStar(ctx, p.size * 0.85);
+          }
+          ctx.restore();
+        }
+
+        if (particles.length > 0 || (continuousRain && !tabHidden && !prefersReducedMotion)) {
+          requestAnimationFrame(tickConfetti);
+        } else {
+          confettiLoopRunning = false;
+        }
+      }
+
+      /* =====================================================================
+       * 5. PORTRAIT & MASCOT ARTWORK
+       * ===================================================================== */
+      function getPortraitMarkup() {
+        if (activePhotoDataUri && activePhotoDataUri.startsWith('data:image/')) {
+          return '<img src="' + activePhotoDataUri.replace(/"/g, '&quot;') + '" alt="Akshita" />';
+        }
+        return '<img src="/akshita-portrait.jpg" alt="Akshita" onerror="this.style.display=\'none\'" />';
+      }
+
+      function renderTopLogoAvatar() {
+        const logoBox = document.getElementById('top-logo-circle');
+        if (logoBox) {
+          logoBox.innerHTML = getPortraitMarkup();
+        }
+      }
+      renderTopLogoAvatar();
+
+      function getMascotSVG(pose) {
+        if (pose === 'back') {
+          return (
+            '<svg class="mascot-svg mascot-dance" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cheeky munchkin mascot peeking over shoulder">' +
+              '<g class="m-head">' +
+                '<path d="M58 76 C40 76 34 102 52 114 C62 120 76 122 104 122 C136 122 154 108 154 82 C154 52 132 34 102 34 C74 34 58 52 58 76 Z" fill="#FAD2B8" stroke="#33201A" stroke-width="4" stroke-linejoin="round"/>' +
+                '<path d="M62 66 C62 40 82 28 108 28 C136 28 156 46 154 78 C142 84 112 84 82 76 C70 73 64 70 62 66 Z" fill="#231916" stroke="#33201A" stroke-width="4" stroke-linejoin="round"/>' +
+                '<circle cx="148" cy="88" r="10" fill="#FAD2B8" stroke="#33201A" stroke-width="3.5"/>' +
+                '<path d="M48 64 Q58 54 70 62" fill="none" stroke="#231916" stroke-width="7" stroke-linecap="round"/>' +
+                '<circle cx="58" cy="78" r="6.5" fill="#231916"/>' +
+                '<circle cx="56" cy="76" r="2.2" fill="#FFFFFF"/>' +
+                '<ellipse cx="48" cy="96" rx="8" ry="5" fill="#E86A92" opacity="0.55"/>' +
+              '</g>' +
+              '<path d="M62 116 L142 116 L150 174 L54 174 Z" fill="#D63426" stroke="#33201A" stroke-width="4" stroke-linejoin="round"/>' +
+              '<path d="M56 122 L42 156 L58 162" fill="#D63426" stroke="#33201A" stroke-width="4" stroke-linejoin="round"/>' +
+              '<path d="M144 122 L158 156 L142 162" fill="#D63426" stroke="#33201A" stroke-width="4" stroke-linejoin="round"/>' +
+            '</svg>'
+          );
+        }
+
+        const isTumble = pose === 'tumble';
+        const isParty = pose === 'party';
+        const animClass = isTumble ? 'mascot-tumble' : (isParty ? 'mascot-party' : 'mascot-dance');
+
+        return (
+          '<svg class="mascot-svg ' + animClass + '" viewBox="0 0 200 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Playful birthday mascot">' +
+            '<g>' +
+              '<rect x="78" y="162" width="14" height="24" rx="6" fill="#FAD2B8" stroke="#33201A" stroke-width="3.5"/>' +
+              '<rect x="108" y="162" width="14" height="24" rx="6" fill="#FAD2B8" stroke="#33201A" stroke-width="3.5"/>' +
+              '<rect x="76" y="178" width="18" height="9" rx="3" fill="#FFFFFF" stroke="#33201A" stroke-width="3"/>' +
+              '<rect x="106" y="178" width="18" height="9" rx="3" fill="#FFFFFF" stroke="#33201A" stroke-width="3"/>' +
+              '<ellipse cx="83" cy="191" rx="12" ry="6" fill="#F0A11B" stroke="#33201A" stroke-width="3.5"/>' +
+              '<ellipse cx="117" cy="191" rx="12" ry="6" fill="#F0A11B" stroke="#33201A" stroke-width="3.5"/>' +
+            '</g>' +
+            '<path d="M70 142 L130 142 L134 166 L104 166 L100 156 L96 166 L66 166 Z" fill="#F5C518" stroke="#33201A" stroke-width="3.8" stroke-linejoin="round"/>' +
+            '<g class="m-arm-l">' +
+              '<path d="M72 110 L40 96" stroke="#FAD2B8" stroke-width="12" stroke-linecap="round"/>' +
+              '<path d="M72 110 L40 96" stroke="#33201A" stroke-width="3.8" stroke-linecap="round"/>' +
+              '<circle cx="38" cy="95" r="7" fill="#FAD2B8" stroke="#33201A" stroke-width="3.5"/>' +
+            '</g>' +
+            '<g class="m-arm-r">' +
+              '<path d="M128 110 L160 96" stroke="#FAD2B8" stroke-width="12" stroke-linecap="round"/>' +
+              '<path d="M128 110 L160 96" stroke="#33201A" stroke-width="3.8" stroke-linecap="round"/>' +
+              '<circle cx="162" cy="95" r="7" fill="#FAD2B8" stroke="#33201A" stroke-width="3.5"/>' +
+            '</g>' +
+            '<path d="M66 104 L134 104 L138 145 L62 145 Z" fill="#D63426" stroke="#33201A" stroke-width="3.8" stroke-linejoin="round"/>' +
+            '<g class="m-head">' +
+              '<circle cx="52" cy="76" r="9" fill="#FAD2B8" stroke="#33201A" stroke-width="3.5"/>' +
+              '<circle cx="146" cy="76" r="9" fill="#FAD2B8" stroke="#33201A" stroke-width="3.5"/>' +
+              '<path d="M56 64 C56 38 76 26 102 26 C128 26 146 40 146 66 C158 74 160 98 142 106 C128 112 76 112 58 106 C38 98 40 72 56 64 Z" fill="#FAD2B8" stroke="#33201A" stroke-width="3.8" stroke-linejoin="round"/>' +
+              '<path d="M56 60 C58 34 78 24 102 24 C126 24 144 36 146 60 C132 50 116 48 100 48 C82 48 68 52 56 60 Z" fill="#231916" stroke="#33201A" stroke-width="3.5" stroke-linejoin="round"/>' +
+              '<path d="M68 48 Q80 38 92 48" fill="none" stroke="#231916" stroke-width="7.5" stroke-linecap="round"/>' +
+              '<path d="M108 48 Q120 38 132 48" fill="none" stroke="#231916" stroke-width="7.5" stroke-linecap="round"/>' +
+              '<circle cx="81" cy="68" r="9" fill="#231916"/>' +
+              '<circle cx="81" cy="68" r="4.2" fill="#FFFFFF"/>' +
+              '<circle cx="119" cy="68" r="9" fill="#231916"/>' +
+              '<circle cx="119" cy="68" r="4.2" fill="#FFFFFF"/>' +
+              '<ellipse cx="62" cy="86" rx="10" ry="6" fill="#E86A92" opacity="0.55"/>' +
+              '<ellipse cx="138" cy="86" rx="10" ry="6" fill="#E86A92" opacity="0.55"/>' +
+              (isTumble
+                ? '<ellipse cx="100" cy="91" rx="9" ry="11" fill="#8E1F1F" stroke="#33201A" stroke-width="3"/>'
+                : '<path d="M88 86 Q100 100 114 86 Z" fill="#E86A92" stroke="#33201A" stroke-width="3" stroke-linejoin="round"/>') +
+              (isParty
+                ? '<polygon points="100,2 82,30 118,30" fill="#2E63D0" stroke="#33201A" stroke-width="3.2" stroke-linejoin="round"/>' +
+                  '<circle cx="100" cy="2" r="5" fill="#F0A11B"/>'
+                : '') +
+            '</g>' +
+          '</svg>'
+        );
+      }
+
+      function getGiftBoxSVG(isOpened, num) {
+        return (
+          '<svg class="gift-wiggle" width="112" height="112" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+            '<polygon points="20,52 60,66 100,52 96,104 60,116 24,104" fill="#E86A92" stroke="#8E1F1F" stroke-width="3.2" stroke-linejoin="round"/>' +
+            '<polygon points="20,52 60,66 60,116 24,104" fill="#F28CAE" stroke="#8E1F1F" stroke-width="3.2" stroke-linejoin="round"/>' +
+            '<polygon points="36,58 46,61 46,111 36,108" fill="#8E1F1F"/>' +
+            '<polygon points="74,61 84,58 84,108 74,111" fill="#8E1F1F"/>' +
+            '<g transform="' + (isOpened ? 'translate(0, -12) rotate(-8 60 45)' : 'translate(0, 0)') + '">' +
+              '<polygon points="14,42 60,26 106,42 60,58" fill="#F7A8C4" stroke="#8E1F1F" stroke-width="3.2" stroke-linejoin="round"/>' +
+              '<polygon points="14,42 60,58 60,68 14,52" fill="#E86A92" stroke="#8E1F1F" stroke-width="3.2" stroke-linejoin="round"/>' +
+              '<polygon points="106,42 60,58 60,68 106,52" fill="#D4567E" stroke="#8E1F1F" stroke-width="3.2" stroke-linejoin="round"/>' +
+              '<path d="M60 42 C42 22 30 36 46 46 C54 49 60 44 60 42 Z" fill="#8E1F1F" stroke="#33201A" stroke-width="2"/>' +
+              '<path d="M60 42 C78 22 90 36 74 46 C66 49 60 44 60 42 Z" fill="#8E1F1F" stroke="#33201A" stroke-width="2"/>' +
+              '<circle cx="60" cy="42" r="5" fill="#F0A11B" stroke="#33201A" stroke-width="2"/>' +
+            '</g>' +
+            (isOpened
+              ? '<circle cx="96" cy="24" r="14" fill="#2F8F5B" stroke="#FFF6E9" stroke-width="2.5"/>' +
+                '<path d="M90 24 L94 28 L103 19" fill="none" stroke="#FFF6E9" stroke-width="3" stroke-linecap="round"/>'
+              : '<circle cx="96" cy="24" r="13" fill="#FFF6E9" stroke="#8E1F1F" stroke-width="2.5"/>' +
+                '<text x="96" y="29" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" font-size="14" fill="#8E1F1F">' + num + '</text>') +
+          '</svg>'
+        );
+      }
+
+      /* =====================================================================
+       * 6. SCENE STATE MACHINE & INTERACTIVE FLOW (BEATS 0 TO 10)
+       * ===================================================================== */
+      const stageEl = document.getElementById('stage-card');
+      const announcerEl = document.getElementById('sr-announcer');
+
+      let currentScene = 'WRAP';
+      let noCount = 0;
+      let poppedBalloons = { 0: false, 1: false, 2: false, 3: false, 4: false };
+      let openedGifts = { 1: false, 2: false, 3: false, 4: false };
+      let candlesLit = [true, true, true, true, true, true, true];
+      let wishSealed = false;
+      let flippedWishes = { 0: false, 1: false, 2: false, 3: false, 4: false };
+      let collectedStars = { 0: false, 1: false, 2: false, 3: false, 4: false };
+      let activeStarFortune = 'Tap any glowing star token above to drop it into Akshita\'s 19 NOV Wish Jar ✨';
+      let mascotTapCount = 0;
+      let holdBlowInterval = null;
+      let holdProgress = 0;
+
+      const BALLOON_BLESSINGS_DATA = [
+        { id: 0, label: 'Endless Smiles', emoji: '😊', color: '#E86A92' },
+        { id: 1, label: 'Extra Sweetness', emoji: '🍰', color: '#F0A11B' },
+        { id: 2, label: 'Pure Good Vibes', emoji: '✨', color: '#D63426' },
+        { id: 3, label: 'Lucky Chapter', emoji: '🍀', color: '#2F8F5B' },
+        { id: 4, label: '19_NOV Magic', emoji: '🥳', color: '#2E63D0' }
+      ];
+
+      const WISH_JAR_STARS_DATA = [
+        {
+          id: 0,
+          tag: '🌟 Star 1 · Kindness',
+          fortune: '🌟 Star 1/5: Someone noticed your "19_NOV" bio and wanted to make sure your birthday feels genuinely special.'
+        },
+        {
+          id: 1,
+          tag: '💫 Star 2 · Little Joys',
+          fortune: '💫 Star 2/5: May your favorite comfort food always taste 10/10 and your favorite songs hit at the exact right moment.'
+        },
+        {
+          id: 2,
+          tag: '✨ Star 3 · Big Wins',
+          fortune: '✨ Star 3/5: May the quiet hard work nobody sees pay off in the loudest, happiest way this year.'
+        },
+        {
+          id: 3,
+          tag: '🌙 Star 4 · Warmth',
+          fortune: '🌙 Star 4/5: May you always be surrounded by people who value your kindness and make you laugh effortlessly.'
+        },
+        {
+          id: 4,
+          tag: '☀️ Star 5 · 19 NOV',
+          fortune: '☀️ Star 5/5: Wish Jar sealed! 19 November is officially certified as the brightest day of the month for Akshita 😊🥳🥰'
+        }
+      ];
+
+      function announceScene(titleText) {
+        if (announcerEl) {
+          announcerEl.textContent = titleText;
+        }
+      }
+
+      function focusSceneHeading() {
+        const heading = stageEl.querySelector('[data-scene-heading]');
+        if (heading) {
+          heading.setAttribute('tabindex', '-1');
+          heading.focus({ preventScroll: true });
+        }
+      }
+
+      function showToast(msg) {
+        const t = document.getElementById('toast-bubble');
+        if (!t) return;
+        t.textContent = msg;
+        t.classList.add('show');
+        clearTimeout(t._hideTimer);
+        t._hideTimer = setTimeout(function () {
+          t.classList.remove('show');
+        }, 3200);
+      }
+
+      function triggerMidnightRollover() {
+        continuousRain = true;
+        spawnCelebrationBurst(38, 'all');
+        playSfx('fanfare');
+        showToast("it's officially your birthday 🎂");
+        if (currentScene !== 'WRAP') {
+          renderScene(currentScene);
+        }
+      }
+
+      function getOpenedCount() {
+        return (openedGifts[1] ? 1 : 0) + (openedGifts[2] ? 1 : 0) + (openedGifts[3] ? 1 : 0) + (openedGifts[4] ? 1 : 0);
+      }
+
+      function getPoppedBalloonsCount() {
+        return [0, 1, 2, 3, 4].filter(function (i) { return poppedBalloons[i]; }).length;
+      }
+
+      function getCollectedStarsCount() {
+        return [0, 1, 2, 3, 4].filter(function (i) { return collectedStars[i]; }).length;
+      }
+
+      function renderArchedHeadline(id, text, isLarge) {
+        const cls = isLarge ? 'arched-text-large' : 'arched-text';
+        return (
+          '<svg class="arched-svg" viewBox="0 0 540 110" aria-hidden="true">' +
+            '<defs>' +
+              '<path id="' + id + '" d="M 30,96 Q 270,18 510,96" />' +
+            '</defs>' +
+            '<text class="' + cls + '">' +
+              '<textPath href="#' + id + '" startOffset="50%" text-anchor="middle">' +
+                text +
+              '</textPath>' +
+            '</text>' +
+          '</svg>'
+        );
+      }
+
+      function renderScene(sceneName) {
+        currentScene = sceneName;
+        continuousRain = (currentMode === 'DAY' && (sceneName === 'INTRO' || sceneName === 'FINALE')) || sceneName === 'FINALE';
+        if (continuousRain) {
+          ensureConfettiLoop();
+        }
+
+        if (sceneName === 'WRAP') {
+          stageEl.innerHTML =
+            '<div class="scene-enter wrap-shimmer">' +
+              '<div class="polaroid-img-box" style="width:92px;height:92px;">' + getPortraitMarkup() + '</div>' +
+              '<h1 data-scene-heading class="question-title">wrapping your gift…</h1>' +
+              '<div class="shimmer-bar" aria-hidden="true"></div>' +
+              '<p class="sub-pill-text">for Akshita · 19 NOV</p>' +
+            '</div>';
+          announceScene('Wrapping your gift');
+          return;
+        }
+
+        if (sceneName === 'INTRO') {
+          const dodgeHint = noCount >= 2 ? ' (try catching NO now 😜)' : '';
+          stageEl.innerHTML =
+            '<div class="scene-enter">' +
+              renderArchedHeadline('arch-intro', 'I have made something for you', false) +
+              '<h1 data-scene-heading class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">I have made something for you</h1>' +
+              '<p class="sub-pill-text" id="intro-mode-line">' + getIntroModeLine() + '</p>' +
+              (wasVisitedBefore
+                ? '<p class="returning-text">you came back 🥹 the page remembered you.</p>'
+                : '') +
+              '<div class="mascot-wrap" data-action="mascot-tap" role="button" tabindex="0" aria-label="Tap dancing mascot">' +
+                getMascotSVG('dance') +
+              '</div>' +
+              '<p class="question-title">Do you wanna see it?' + dodgeHint + '</p>' +
+              '<div class="btn-row">' +
+                '<button type="button" class="candy-btn" data-action="intro-yes">YES</button>' +
+                '<button type="button" id="intro-no-btn" class="candy-btn" data-action="intro-no" style="' +
+                  (noCount >= 2 ? 'transform:scale(0.78);' : '') +
+                '">NO</button>' +
+              '</div>' +
+            '</div>';
+          announceScene('I have made something for you. Do you wanna see it?');
+          focusSceneHeading();
+          return;
+        }
+
+        if (sceneName === 'NO_GAG') {
+          stageEl.innerHTML =
+            '<div class="scene-enter">' +
+              renderArchedHeadline('arch-no', 'HOW DARE YOU!?', true) +
+              '<h1 data-scene-heading style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">HOW DARE YOU!?</h1>' +
+              '<div class="mascot-wrap" data-action="mascot-tap" role="button" tabindex="0" aria-label="Upside down mascot">' +
+                getMascotSVG('tumble') +
+              '</div>' +
+              '<p class="sub-pill-text">Excuse me?! Even the mascot flipped upside down 😤</p>' +
+              '<div class="btn-row">' +
+                '<button type="button" class="candy-btn" data-action="try-again">TRY AGAIN</button>' +
+              '</div>' +
+            '</div>';
+          announceScene('How dare you!? Try again.');
+          focusSceneHeading();
+          return;
+        }
+
+        if (sceneName === 'EXCITED') {
+          stageEl.innerHTML =
+            '<div class="scene-enter">' +
+              renderArchedHeadline('arch-excited', 'Are you really excited?', false) +
+              '<h1 data-scene-heading style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">Are you really excited?</h1>' +
+              '<div class="mascot-wrap" data-action="mascot-tap" role="button" tabindex="0" aria-label="Peeking mascot">' +
+                getMascotSVG('back') +
+              '</div>' +
+              '<p class="sub-pill-text">No escape now — only good vibes ahead ✨</p>' +
+              '<div class="btn-row">' +
+                '<button type="button" id="excited-yes-1" class="candy-btn" data-action="excited-yes" aria-label="Yes, show me!">YES</button>' +
+                '<button type="button" id="excited-yes-2" class="candy-btn" data-action="excited-yes" aria-label="Yes, super excited!">YES</button>' +
+              '</div>' +
+            '</div>';
+          announceScene('Are you really excited? Choose YES.');
+          focusSceneHeading();
+          return;
+        }
+
+        // NEW EXTRA STEP 1: Pop 5 Birthday Balloons in-place to unlock the Gift Basket!
+        if (sceneName === 'BALLOON_POP') {
+          const poppedCount = getPoppedBalloonsCount();
+          const allPopped = poppedCount === 5;
+          let balloonsHtml = '';
+          BALLOON_BLESSINGS_DATA.forEach(function (b, idx) {
+            const isPopped = !!poppedBalloons[idx];
+            balloonsHtml +=
+              '<button type="button" class="balloon-pop-slot ' + (isPopped ? 'is-popped' : '') + '" data-action="pop-balloon" data-index="' + idx + '" aria-label="Birthday balloon ' + (idx + 1) + ': ' + b.label + (isPopped ? ' (popped)' : ' (tap to pop)') + '">' +
+                '<svg class="balloon-pop-svg" viewBox="0 0 80 115" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+                  '<path d="M40 72 Q32 90 42 110" fill="none" stroke="#8E1F1F" stroke-width="2.2" stroke-linecap="round"/>' +
+                  '<polygon points="35,72 45,72 40,65" fill="' + b.color + '" stroke="#8E1F1F" stroke-width="2"/>' +
+                  '<ellipse cx="40" cy="36" rx="28" ry="33" fill="' + b.color + '" stroke="#8E1F1F" stroke-width="3"/>' +
+                  '<ellipse cx="29" cy="24" rx="6" ry="11" transform="rotate(-22 29 24)" fill="#FFF6E9" opacity="0.65"/>' +
+                  '<text x="40" y="43" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" font-size="16" fill="#FFF6E9">' + (idx + 1) + '</text>' +
+                '</svg>' +
+                '<div class="balloon-blessing-pill">' +
+                  '<span class="blessing-emoji" aria-hidden="true">' + b.emoji + '</span>' +
+                  '<span class="blessing-label">' + b.label + '</span>' +
+                '</div>' +
+              '</button>';
+          });
+
+          stageEl.innerHTML =
+            '<div class="scene-enter">' +
+              renderArchedHeadline('arch-balloons', 'Wait! Pop 5 Birthday Balloons!', false) +
+              '<h1 data-scene-heading style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">Pop 5 Birthday Balloons to unlock your gifts</h1>' +
+              '<p class="sub-pill-text" id="balloon-status-line">' +
+                (allPopped
+                  ? 'All 5 birthday blessings unlocked for Akshita! 🎉'
+                  : 'Tap each balloon to pop it & reveal a birthday blessing (' + poppedCount + '/5 popped) 🎈') +
+              '</p>' +
+              '<div class="balloons-stage-grid">' +
+                balloonsHtml +
+              '</div>' +
+              '<div class="nav-strip" id="balloon-nav-strip">' +
+                '<button type="button" class="candy-btn secondary" data-action="pop-all-balloons">' +
+                  (allPopped ? 'Reset Balloons 🎈' : 'Pop All 5 ✨') +
+                '</button>' +
+                '<button type="button" id="balloon-continue-btn" class="candy-btn ' + (allPopped ? 'mint' : '') + '" data-action="go-scene" data-target="HUB">' +
+                  'Open Your 4 Gifts 🎁 →' +
+                '</button>' +
+              '</div>' +
+            '</div>';
+          announceScene('Pop 5 Birthday Balloons to unlock your gifts.');
+          focusSceneHeading();
+          return;
+        }
+
+        if (sceneName === 'HUB') {
+          const count = getOpenedCount();
+          const allOpened = count === 4;
+          const isLocked = currentMode === 'EARLY';
+          stageEl.innerHTML =
+            '<div class="scene-enter">' +
+              renderArchedHeadline('arch-hub', 'Each gift has something for you...', false) +
+              '<h1 data-scene-heading style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">Each gift has something for you. Click on the gifts.</h1>' +
+              '<p style="font-family:var(--font-display);font-weight:700;color:var(--soft-ink);font-size:0.95rem;">' +
+                'Gifts opened: <strong>' + count + '/4</strong>' +
+              '</p>' +
+              '<div class="gifts-grid">' +
+                '<button type="button" class="gift-box-btn ' + (openedGifts[1] ? 'is-opened' : '') + '" data-action="open-gift" data-gift="1" aria-label="Gift 1: The Birthday Card ' + (openedGifts[1] ? '(Opened)' : '(Unopened)') + '">' +
+                  getGiftBoxSVG(openedGifts[1], 1) +
+                  '<span class="gift-status-tag">' + (openedGifts[1] ? '✓ Gift 1 · Card' : 'Gift 1 · Card') + '</span>' +
+                '</button>' +
+                '<button type="button" class="gift-box-btn ' + (openedGifts[2] ? 'is-opened' : '') + '" data-action="open-gift" data-gift="2" aria-label="Gift 2: Make a Wish Cake ' + (openedGifts[2] ? '(Opened)' : '(Unopened)') + '">' +
+                  getGiftBoxSVG(openedGifts[2], 2) +
+                  '<span class="gift-status-tag">' + (openedGifts[2] ? '✓ Gift 2 · Wish' : 'Gift 2 · Wish') + '</span>' +
+                '</button>' +
+                '<button type="button" class="gift-box-btn ' + (openedGifts[3] ? 'is-opened' : '') + '" data-action="open-gift" data-gift="3" aria-label="Gift 3: Wishes Line ' + (openedGifts[3] ? '(Opened)' : '(Unopened)') + '">' +
+                  getGiftBoxSVG(openedGifts[3], 3) +
+                  '<span class="gift-status-tag">' + (openedGifts[3] ? '✓ Gift 3 · Polaroids' : 'Gift 3 · Polaroids') + '</span>' +
+                '</button>' +
+                '<button type="button" class="gift-box-btn ' + (openedGifts[4] ? 'is-opened' : '') + '" data-action="open-gift" data-gift="4" aria-label="Gift 4: 19 NOV Wish Jar ' + (openedGifts[4] ? '(Opened)' : '(Unopened)') + '">' +
+                  getGiftBoxSVG(openedGifts[4], 4) +
+                  '<span class="gift-status-tag">' + (openedGifts[4] ? '✓ Gift 4 · Wish Jar' : 'Gift 4 · Wish Jar') + '</span>' +
+                '</button>' +
+              '</div>' +
+              '<p class="question-title" style="letter-spacing:1px;">CLICK ON THE 4 GIFTS</p>' +
+              (allOpened
+                ? '<button type="button" id="bonus-envelope-btn" class="envelope-card" data-action="envelope-tap" aria-label="' + (isLocked ? 'Bonus sealed envelope: open on 19 NOV' : 'Bonus envelope unlocked: click to open') + '">' +
+                    '<div style="display:flex;align-items:center;gap:10px;text-align:left;">' +
+                      '<span style="font-size:1.7rem;" aria-hidden="true">' + (isLocked ? '✉️🔒' : '💌✨') + '</span>' +
+                      '<div>' +
+                        '<div style="font-family:var(--font-display);font-weight:800;color:var(--maroon);font-size:0.98rem;">' +
+                          (isLocked ? 'Bonus Sealed Envelope' : '19 NOV Envelope Unlocked!') +
+                        '</div>' +
+                        '<div style="font-size:0.84rem;font-weight:700;color:var(--soft-ink);">' +
+                          (isLocked ? 'Wax sealed · open on 19 NOV 🤫' : 'Tap to crack the wax seal & read 🎉') +
+                        '</div>' +
+                      '</div>' +
+                    '</div>' +
+                    '<span style="font-family:var(--font-display);font-weight:800;font-size:0.85rem;color:var(--gingham-red);">' +
+                      (isLocked ? '19 NOV 🤫' : 'OPEN →') +
+                    '</span>' +
+                  '</button>'
+                : '') +
+              '<div class="nav-strip">' +
+                '<button type="button" class="candy-btn secondary" data-action="go-scene" data-target="BALLOON_POP">← Balloons</button>' +
+                '<button type="button" class="candy-btn ' + (allOpened ? 'mint' : 'secondary') + '" data-action="go-scene" data-target="NOTE">' +
+                  'Read Birthday Note 📝 →' +
+                '</button>' +
+              '</div>' +
+            '</div>';
+          announceScene('Gift Hub. ' + count + ' of 4 gifts opened.');
+          focusSceneHeading();
+          return;
+        }
+
+        if (sceneName === 'GIFT1') {
+          stageEl.innerHTML =
+            '<div class="scene-enter">' +
+              '<div class="bday-card-layout">' +
+                '<div class="bday-title-stack">' +
+                  '<div style="color:var(--amber);font-size:1.2rem;margin-bottom:2px;" aria-hidden="true">✦ ✨ ✦</div>' +
+                  '<h1 data-scene-heading class="bday-happy">HAPPY ✦</h1>' +
+                  '<div class="bday-script">Birthday</div>' +
+                  '<p class="bday-short-msg">' +
+                    'Wishing you a little bit of happiness, laughter and joy — today, always.' +
+                  '</p>' +
+                  '<div class="ribbon-banner">Akshita</div>' +
+                  '<p style="font-size:0.82rem;font-weight:700;color:var(--soft-ink);margin-top:8px;">' +
+                    '"you can wish me on 19_NOV 😊🥳🥰"' +
+                  '</p>' +
+                '</div>' +
+                '<div style="position:relative;display:flex;flex-direction:column;align-items:center;">' +
+                  '<div class="polaroid-frame">' +
+                    '<div class="polaroid-tape-tl"></div>' +
+                    '<div class="polaroid-tape-br"></div>' +
+                    '<div class="polaroid-img-box">' +
+                      getPortraitMarkup() +
+                    '</div>' +
+                    '<div class="polaroid-caption">the birthday girl ✨</div>' +
+                  '</div>' +
+                  '<div class="mascot-wrap" data-action="mascot-tap" role="button" tabindex="0" aria-label="Peeking mascot" style="position:absolute;bottom:-18px;right:-6px;transform:scale(0.58);">' +
+                    getMascotSVG('dance') +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+              '<div class="nav-strip">' +
+                '<button type="button" class="candy-btn secondary" data-action="go-scene" data-target="HUB">← Gift Hub</button>' +
+                '<button type="button" class="candy-btn" data-action="open-gift" data-gift="2">Gift 2: Make a Wish 🎂 →</button>' +
+              '</div>' +
+            '</div>';
+          announceScene('Gift 1: Happy Birthday Akshita card.');
+          focusSceneHeading();
+          return;
+        }
+
+        if (sceneName === 'GIFT2') {
+          const litCount = candlesLit.filter(Boolean).length;
+          let candlesHtml = '';
+          for (let i = 0; i < 7; i++) {
+            const isOut = !candlesLit[i];
+            candlesHtml +=
+              '<button type="button" class="candle-btn ' + (isOut ? 'is-out' : '') + '" data-action="toggle-candle" data-index="' + i + '" aria-label="Wish candle ' + (i + 1) + (isOut ? ' blown out' : ' lit, tap to blow out') + '">' +
+                '<svg class="smoke-wisp" viewBox="0 0 20 30" aria-hidden="true">' +
+                  '<path d="M10 28 Q4 18 12 12 Q16 6 8 2" fill="none" stroke="#8C7A70" stroke-width="2.5" stroke-linecap="round"/>' +
+                '</svg>' +
+                '<svg class="candle-flame" viewBox="0 0 20 30" aria-hidden="true">' +
+                  '<path d="M10 2 C10 2 18 12 18 19 C18 24 14.5 28 10 28 C5.5 28 2 24 2 19 C2 12 10 2 10 2 Z" fill="#F0A11B"/>' +
+                  '<path d="M10 9 C10 9 14 15 14 20 C14 23 12.2 26 10 26 C7.8 26 6 23 6 20 C6 15 10 9 10 9 Z" fill="#FFF6E9"/>' +
+                '</svg>' +
+                '<div class="candle-stick"></div>' +
+              '</button>';
+          }
+
+          stageEl.innerHTML =
+            '<div class="scene-enter">' +
+              renderArchedHeadline('arch-wish', 'MAKE A WISH', true) +
+              '<h1 data-scene-heading style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">Make a Wish</h1>' +
+              '<p class="sub-pill-text" id="wish-status-line">' +
+                (wishSealed
+                  ? 'Wish sealed ✨ may it come true'
+                  : '7 candles = 7 wishes ✨ Tap each candle or hold the blow button!') +
+              '</p>' +
+              '<div class="cake-stage">' +
+                '<div class="candles-row">' + candlesHtml + '</div>' +
+                '<!-- Two-tier birthday cake SVG with wide 192px top tier so all 7 candles sit directly on top -->' +
+                '<svg width="280" height="152" viewBox="0 0 280 152" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+                  '<!-- Cake Plate -->' +
+                  '<ellipse cx="140" cy="140" rx="130" ry="10" fill="#E8D5B7" stroke="#8E1F1F" stroke-width="3"/>' +
+                  '<!-- Bottom Tier -->' +
+                  '<rect x="28" y="78" width="224" height="60" rx="14" fill="#F5DEC2" stroke="#8E1F1F" stroke-width="3.2"/>' +
+                  '<path d="M28 88 Q46 106 65 88 Q84 106 103 88 Q122 106 140 88 Q158 106 177 88 Q196 106 215 88 Q234 106 252 88 L252 78 L28 78 Z" fill="#FFFCF5" stroke="#8E1F1F" stroke-width="3"/>' +
+                  '<!-- Top Tier (x=44 to x=236 -> width 192px, wider than the 172px candles row!) -->' +
+                  '<rect x="44" y="24" width="192" height="56" rx="12" fill="#F5DEC2" stroke="#8E1F1F" stroke-width="3.2"/>' +
+                  '<path d="M44 36 Q63 52 82 36 Q101 52 120 36 Q140 52 160 36 Q179 52 198 36 Q217 52 236 36 L236 24 L44 24 Z" fill="#FFFCF5" stroke="#8E1F1F" stroke-width="3"/>' +
+                  '<!-- Decorative Berries along top tier -->' +
+                  '<circle cx="62" cy="23" r="5.5" fill="#D63426" stroke="#8E1F1F" stroke-width="2"/>' +
+                  '<circle cx="114" cy="23" r="5.5" fill="#D63426" stroke="#8E1F1F" stroke-width="2"/>' +
+                  '<circle cx="166" cy="23" r="5.5" fill="#D63426" stroke="#8E1F1F" stroke-width="2"/>' +
+                  '<circle cx="218" cy="23" r="5.5" fill="#D63426" stroke="#8E1F1F" stroke-width="2"/>' +
+                '</svg>' +
+              '</div>' +
+              '<div class="blow-controls" id="blow-controls-wrap">' +
+                (litCount > 0
+                  ? '<button type="button" id="blow-hold-btn" class="candy-btn amber blow-hold-btn" aria-label="Hold or press Enter to blow out all candles">' +
+                      '<span id="blow-progress-fill" class="blow-progress-fill"></span>' +
+                      '<span id="blow-btn-label" style="position:relative;z-index:2;">Hold to Blow Candles 💨 (' + litCount + ' left)</span>' +
+                    '</button>'
+                  : '<button type="button" class="candy-btn secondary" data-action="relight-candles">Relight Candles 🔥</button>') +
+              '</div>' +
+              '<div class="nav-strip">' +
+                '<button type="button" class="candy-btn secondary" data-action="go-scene" data-target="HUB">← Gift Hub</button>' +
+                '<button type="button" class="candy-btn" data-action="open-gift" data-gift="3">Gift 3: Wishes Line 📸 →</button>' +
+              '</div>' +
+            '</div>';
+          bindBlowButtonEvents();
+          announceScene('Gift 2: Make a Wish. 7 candles on a birthday cake.');
+          focusSceneHeading();
+          return;
+        }
+
+        if (sceneName === 'GIFT3') {
+          const cardsData = [
+            {
+              title: 'Akshita ✨',
+              backTitle: '19_NOV 😊🥳🥰',
+              backDesc: 'May this new chapter feel warm, bright, and unmistakably yours.',
+              isCircle: true,
+              svg: getPortraitMarkup()
+            },
+            {
+              title: 'Tap to flip 🎈',
+              backTitle: 'more laughter',
+              backDesc: 'The kind of effortless laughter that makes your whole week lighter.',
+              isCircle: false,
+              svg:
+                '<svg viewBox="0 0 140 120" xmlns="http://www.w3.org/2000/svg">' +
+                  '<rect width="140" height="120" fill="#FFF6E9"/>' +
+                  '<path d="M48 74 L44 108 M72 68 L72 108 M96 76 L100 108" stroke="#8E1F1F" stroke-width="2"/>' +
+                  '<ellipse cx="48" cy="48" rx="18" ry="22" fill="#E86A92" stroke="#8E1F1F" stroke-width="2.5"/>' +
+                  '<ellipse cx="72" cy="40" rx="19" ry="24" fill="#F0A11B" stroke="#8E1F1F" stroke-width="2.5"/>' +
+                  '<ellipse cx="96" cy="50" rx="18" ry="22" fill="#2E63D0" stroke="#8E1F1F" stroke-width="2.5"/>' +
+                '</svg>'
+            },
+            {
+              title: 'Tap to flip ⭐',
+              backTitle: 'big dreams, bigger wins',
+              backDesc: 'May every quiet goal you work hard for turn into a proud reality.',
+              isCircle: false,
+              svg:
+                '<svg viewBox="0 0 140 120" xmlns="http://www.w3.org/2000/svg">' +
+                  '<rect width="140" height="120" fill="#FFF6E9"/>' +
+                  '<polygon points="70,16 84,44 115,48 92,70 98,101 70,86 42,101 48,70 25,48 56,44" fill="#F0A11B" stroke="#8E1F1F" stroke-width="3" stroke-linejoin="round"/>' +
+                  '<circle cx="62" cy="56" r="3" fill="#33201A"/>' +
+                  '<circle cx="78" cy="56" r="3" fill="#33201A"/>' +
+                  '<path d="M64 66 Q70 72 76 66" fill="none" stroke="#33201A" stroke-width="2.5" stroke-linecap="round"/>' +
+                '</svg>'
+            },
+            {
+              title: 'Tap to flip 🍰',
+              backTitle: 'sweet surprises',
+              backDesc: 'Little unexpected happy moments right in the middle of ordinary days.',
+              isCircle: false,
+              svg:
+                '<svg viewBox="0 0 140 120" xmlns="http://www.w3.org/2000/svg">' +
+                  '<rect width="140" height="120" fill="#FFF6E9"/>' +
+                  '<polygon points="32,86 108,86 108,52 32,68" fill="#F5DEC2" stroke="#8E1F1F" stroke-width="2.8" stroke-linejoin="round"/>' +
+                  '<path d="M32 68 L75 36 L108 52 Z" fill="#E86A92" stroke="#8E1F1F" stroke-width="2.8" stroke-linejoin="round"/>' +
+                  '<circle cx="74" cy="34" r="8" fill="#D63426" stroke="#8E1F1F" stroke-width="2.5"/>' +
+                '</svg>'
+            },
+            {
+              title: 'Tap to flip ☀️',
+              backTitle: 'good health & warm days',
+              backDesc: 'Peaceful mornings, steady energy, and people who value you.',
+              isCircle: false,
+              svg:
+                '<svg viewBox="0 0 140 120" xmlns="http://www.w3.org/2000/svg">' +
+                  '<rect width="140" height="120" fill="#FFF6E9"/>' +
+                  '<g stroke="#D63426" stroke-width="3.5" stroke-linecap="round">' +
+                    '<line x1="70" y1="14" x2="70" y2="24"/><line x1="70" y1="96" x2="70" y2="106"/>' +
+                    '<line x1="24" y1="60" x2="34" y2="60"/><line x1="106" y1="60" x2="116" y2="60"/>' +
+                    '<line x1="38" y1="28" x2="45" y2="35"/><line x1="95" y1="85" x2="102" y2="92"/>' +
+                    '<line x1="102" y1="28" x2="95" y2="35"/><line x1="45" y1="85" x2="38" y2="92"/>' +
+                  '</g>' +
+                  '<circle cx="70" cy="60" r="24" fill="#F0A11B" stroke="#8E1F1F" stroke-width="3"/>' +
+                '</svg>'
+            }
+          ];
+
+          let lineHtml = '';
+          cardsData.forEach(function (c, idx) {
+            const flipped = !!flippedWishes[idx];
+            lineHtml +=
+              '<button type="button" class="wish-card-slot ' + (flipped ? 'is-flipped' : '') + '" data-action="flip-wish" data-index="' + idx + '" data-back-title="' + c.backTitle + '" aria-label="Polaroid ' + (idx + 1) + ': ' + c.backTitle + (flipped ? ' (flipped)' : ' (tap to flip)') + '">' +
+                '<div class="wooden-peg" aria-hidden="true"></div>' +
+                '<div class="wish-card-inner">' +
+                  '<div class="wish-face front">' +
+                    '<div class="wish-illust-box ' + (c.isCircle ? 'is-circle' : '') + '">' + c.svg + '</div>' +
+                    '<span class="wish-front-label">' + c.title + '</span>' +
+                  '</div>' +
+                  '<div class="wish-face back">' +
+                    '<div class="wish-back-title">' + c.backTitle + '</div>' +
+                    '<p class="wish-back-desc">' + c.backDesc + '</p>' +
+                  '</div>' +
+                '</div>' +
+              '</button>';
+          });
+
+          stageEl.innerHTML =
+            '<div class="scene-enter">' +
+              '<h1 data-scene-heading class="question-title" style="margin-top:0;">WISHES ON THE LINE ✨</h1>' +
+              '<p class="sub-pill-text">Tap any polaroid to flip it in place</p>' +
+              '<div class="clothesline-wrap">' +
+                '<div class="clothesline-wire" aria-hidden="true"></div>' +
+                '<div class="clothesline-track">' +
+                  lineHtml +
+                '</div>' +
+              '</div>' +
+              '<div class="nav-strip">' +
+                '<button type="button" class="candy-btn secondary" data-action="go-scene" data-target="HUB">← Gift Hub</button>' +
+                '<button type="button" class="candy-btn secondary" data-action="flip-all-wishes">Flip All ✨</button>' +
+                '<button type="button" class="candy-btn" data-action="open-gift" data-gift="4">Gift 4: 19 NOV Wish Jar 🫙 →</button>' +
+              '</div>' +
+            '</div>';
+          announceScene('Gift 3: Wishes on the clothesline. Tap polaroids to flip.');
+          focusSceneHeading();
+          return;
+        }
+
+        // NEW EXTRA STEP 2 (GIFT 4): Akshita's 19 NOV Wish Jar & Star Fortunes (In-place collection)
+        if (sceneName === 'GIFT4') {
+          const starCount = getCollectedStarsCount();
+          const allCollected = starCount === 5;
+          const starCoords = [
+            { cx: 56, cy: 118 },
+            { cx: 98, cy: 122 },
+            { cx: 78, cy: 92 },
+            { cx: 54, cy: 68 },
+            { cx: 102, cy: 70 }
+          ];
+
+          let jarStarsSvg = '';
+          starCoords.forEach(function (pt, idx) {
+            const isLit = !!collectedStars[idx];
+            jarStarsSvg +=
+              '<g transform="translate(' + pt.cx + ', ' + pt.cy + ')">' +
+                '<g id="jar-star-' + idx + '" class="jar-inner-star ' + (isLit ? 'is-lit' : '') + '">' +
+                  '<polygon points="0,-14 4,-4 14,-4 6,3 9,13 0,7 -9,13 -6,3 -14,-4 -4,-4" fill="#F0A11B" stroke="#8E1F1F" stroke-width="1.8" stroke-linejoin="round"/>' +
+                  '<circle cx="0" cy="0" r="3" fill="#FFF6E9"/>' +
+                '</g>' +
+              '</g>';
+          });
+
+          let tokensHtml = '';
+          WISH_JAR_STARS_DATA.forEach(function (st, idx) {
+            const isCol = !!collectedStars[idx];
+            tokensHtml +=
+              '<button type="button" class="star-token-btn ' + (isCol ? 'is-collected' : '') + '" data-action="collect-star" data-index="' + idx + '" aria-label="' + st.tag + (isCol ? ' (in jar)' : ' (tap to add to jar)') + '">' +
+                '<span>' + (isCol ? '✓ ' + st.tag : st.tag) + '</span>' +
+              '</button>';
+          });
+
+          stageEl.innerHTML =
+            '<div class="scene-enter">' +
+              '<h1 data-scene-heading class="question-title" style="margin-top:0;">THE 19 NOV WISH JAR 🫙✨</h1>' +
+              '<p class="sub-pill-text" id="jar-status-line">' +
+                (allCollected
+                  ? 'All 5 glowing wishes sealed inside Akshita\'s jar! 🌟'
+                  : 'Tap each star below to bottle up 5 birthday fortunes (' + starCount + '/5 in jar)') +
+              '</p>' +
+              '<div class="wish-jar-stage">' +
+                '<div class="jar-svg-wrap">' +
+                  '<svg width="156" height="174" viewBox="0 0 156 174" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+                    '<!-- Glass Jar Body -->' +
+                    '<rect x="26" y="32" width="104" height="130" rx="26" fill="rgba(255, 252, 245, 0.88)" stroke="#8E1F1F" stroke-width="3.5"/>' +
+                    '<!-- Glass Highlight -->' +
+                    '<path d="M38 50 L38 136" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity="0.8"/>' +
+                    '<!-- Jar Neck & Gingham Lid -->' +
+                    '<rect x="40" y="14" width="76" height="20" rx="6" fill="#D63426" stroke="#8E1F1F" stroke-width="3"/>' +
+                    '<path d="M36 34 L120 34" stroke="#F0A11B" stroke-width="4" stroke-linecap="round"/>' +
+                    '<!-- 5 Inner Glowing Stars -->' +
+                    jarStarsSvg +
+                    '<!-- Jar Ribbon Label -->' +
+                    '<rect x="34" y="138" width="88" height="18" rx="6" fill="#FFF3D6" stroke="#8E1F1F" stroke-width="2"/>' +
+                    '<text x="78" y="150.5" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" font-size="9.2" fill="#8E1F1F">AKSHITA · 19 NOV</text>' +
+                  '</svg>' +
+                '</div>' +
+                '<div class="star-tokens-row">' +
+                  tokensHtml +
+                '</div>' +
+                '<div id="jar-fortune-box" class="jar-fortune-scroll" aria-live="polite">' +
+                  activeStarFortune +
+                '</div>' +
+              '</div>' +
+              '<div class="nav-strip">' +
+                '<button type="button" class="candy-btn secondary" data-action="go-scene" data-target="HUB">← Gift Hub</button>' +
+                '<button type="button" class="candy-btn secondary" data-action="collect-all-stars">Bottle All 5 ✨</button>' +
+                '<button type="button" class="candy-btn mint" data-action="go-scene" data-target="NOTE">Read Your Note 📝 →</button>' +
+              '</div>' +
+            '</div>';
+          announceScene('Gift 4: The 19 NOV Wish Jar. Tap stars to collect birthday fortunes.');
+          focusSceneHeading();
+          return;
+        }
+
+        if (sceneName === 'NOTE') {
+          let holesHtml = '';
+          for (let h = 0; h < 11; h++) {
+            holesHtml += '<span class="spiral-hole"></span>';
+          }
+          stageEl.innerHTML =
+            '<div class="scene-enter">' +
+              '<h1 data-scene-heading class="sub-pill-text" style="font-size:1.75rem;margin-bottom:8px;">A Little Note For Akshita 📝</h1>' +
+              '<div class="notebook-sheet">' +
+                '<div class="spiral-holes" aria-hidden="true">' + holesHtml + '</div>' +
+                '<div class="notebook-scroll" tabindex="0" role="region" aria-label="Birthday letter">' +
+                  '<p class="notebook-copy" id="note-copy-text">' + getNoteCopy() + '</p>' +
+                '</div>' +
+              '</div>' +
+              '<div class="nav-strip">' +
+                '<button type="button" class="candy-btn secondary" data-action="go-scene" data-target="HUB">← Gift Hub</button>' +
+                '<button type="button" class="candy-btn" data-action="go-scene" data-target="FINALE">Continue to Finale 🎉 →</button>' +
+              '</div>' +
+            '</div>';
+          announceScene('A birthday note for Akshita.');
+          focusSceneHeading();
+          return;
+        }
+
+        if (sceneName === 'FINALE') {
+          const bannerText = currentMode === 'EARLY'
+            ? 'HAPPY (ALMOST) BIRTHDAY AKSHITA'
+            : 'HAPPY BIRTHDAY AKSHITA';
+          const words = bannerText.split(' ');
+          let letterIdx = 0;
+          let bannerHtml = '';
+          words.forEach(function (w) {
+            bannerHtml += '<span class="stagger-word">';
+            for (let c = 0; c < w.length; c++) {
+              const delayMs = letterIdx * 60;
+              letterIdx++;
+              bannerHtml += '<span class="pop-letter" style="animation-delay:' + delayMs + 'ms">' + w[c] + '</span>';
+            }
+            bannerHtml += '</span>';
+          });
+
+          stageEl.innerHTML =
+            '<div class="scene-enter">' +
+              '<!-- Festive Bunting Garland Flags -->' +
+              '<svg class="finale-bunting" viewBox="0 0 520 42" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+                '<path d="M10 6 Q260 26 510 6" fill="none" stroke="#8E1F1F" stroke-width="2.5"/>' +
+                '<polygon points="35,9 58,12 45,36" fill="#D63426" stroke="#8E1F1F" stroke-width="2"/>' +
+                '<polygon points="95,13 118,15 106,38" fill="#F0A11B" stroke="#8E1F1F" stroke-width="2"/>' +
+                '<polygon points="155,15 178,17 166,40" fill="#E86A92" stroke="#8E1F1F" stroke-width="2"/>' +
+                '<polygon points="215,17 238,17 226,40" fill="#2F8F5B" stroke="#8E1F1F" stroke-width="2"/>' +
+                '<polygon points="282,17 305,17 294,40" fill="#2E63D0" stroke="#8E1F1F" stroke-width="2"/>' +
+                '<polygon points="342,17 365,15 354,40" fill="#F0A11B" stroke="#8E1F1F" stroke-width="2"/>' +
+                '<polygon points="402,15 425,13 414,38" fill="#E86A92" stroke="#8E1F1F" stroke-width="2"/>' +
+                '<polygon points="462,12 485,9 475,36" fill="#D63426" stroke="#8E1F1F" stroke-width="2"/>' +
+              '</svg>' +
+              '<!-- Celebration Medallion with Her Circular Portrait & Floating Balloons -->' +
+              '<div class="finale-hero-medallion">' +
+                '<svg class="floating-balloon-svg" viewBox="0 0 60 90" aria-hidden="true">' +
+                  '<path d="M30 56 Q24 72 32 88" fill="none" stroke="#8E1F1F" stroke-width="2"/>' +
+                  '<ellipse cx="30" cy="28" rx="22" ry="27" fill="#E86A92" stroke="#8E1F1F" stroke-width="2.5"/>' +
+                  '<ellipse cx="22" cy="18" rx="5" ry="9" transform="rotate(-20 22 18)" fill="#FFF6E9" opacity="0.65"/>' +
+                '</svg>' +
+                '<div style="position:relative;">' +
+                  '<span class="finale-crown-badge" aria-hidden="true">👑</span>' +
+                  '<div class="finale-portrait-ring">' +
+                    getPortraitMarkup() +
+                  '</div>' +
+                '</div>' +
+                '<svg class="floating-balloon-svg right" viewBox="0 0 60 90" aria-hidden="true">' +
+                  '<path d="M30 56 Q36 72 28 88" fill="none" stroke="#8E1F1F" stroke-width="2"/>' +
+                  '<ellipse cx="30" cy="28" rx="22" ry="27" fill="#F0A11B" stroke="#8E1F1F" stroke-width="2.5"/>' +
+                  '<ellipse cx="22" cy="18" rx="5" ry="9" transform="rotate(-20 22 18)" fill="#FFF6E9" opacity="0.65"/>' +
+                '</svg>' +
+              '</div>' +
+              '<p class="finale-lead">May all the good things you\'ve been waiting for finally find you this year 💌</p>' +
+              '<h1 data-scene-heading class="stagger-banner" aria-label="' + bannerText + '">' +
+                bannerHtml +
+              '</h1>' +
+              '<div class="date-stamp">19 · 11 · 2026</div>' +
+              (currentMode === 'EARLY'
+                ? '<p class="sub-pill-text" style="color:var(--mint);">come back on the 19th — this page throws a party 🎉</p>'
+                : '<p class="sub-pill-text" style="color:var(--mint);">celebrating you all day long, Akshita 🥳</p>') +
+              '<div class="mascot-wrap" data-action="mascot-tap" role="button" tabindex="0" aria-label="Party dancing mascot" style="transform:scale(0.85);margin:-6px 0;">' +
+                getMascotSVG('party') +
+              '</div>' +
+              '<div class="btn-row">' +
+                '<button type="button" class="candy-btn mint" data-action="go-scene" data-target="HEART">One Final Note 💛 →</button>' +
+                '<button type="button" class="candy-btn secondary" data-action="replay">Replay ↺</button>' +
+              '</div>' +
+            '</div>';
+          spawnCelebrationBurst(28, 'all');
+          playSfx('fanfare');
+          announceScene(bannerText);
+          focusSceneHeading();
+          return;
+        }
+
+        if (sceneName === 'HEART') {
+          stageEl.innerHTML =
+            '<div class="scene-enter">' +
+              '<div class="finale-portrait-ring" style="width:72px;height:72px;margin-bottom:6px;">' +
+                getPortraitMarkup() +
+              '</div>' +
+              '<h1 data-scene-heading class="question-title" style="margin-bottom:8px;">For Akshita 🎂</h1>' +
+              '<div class="heart-note-box">' +
+                '<p class="heart-note-text" id="heart-copy-text">' + getHeartCopy() + '</p>' +
+              '</div>' +
+              '<div class="insta-glitch-box">' +
+                '<p class="insta-glitch-note">' +
+                  '<strong>P.S.</strong> After our quick "hi" earlier, Instagram glitched out on our chat for no reason and keeps showing <em>"message not supported"</em> — so if you can\'t reply or share your review on Instagram, you can drop a message here anytime:' +
+                '</p>' +
+                '<div class="contact-pills-row">' +
+                  '<button type="button" class="contact-chip-btn" data-action="copy-contact" data-copy="7732945208" data-label="WhatsApp number" aria-label="Copy WhatsApp number 7732945208">' +
+                    '<span>💬 WhatsApp: <strong>7732945208</strong></span>' +
+                  '</button>' +
+                  '<button type="button" class="contact-chip-btn" data-action="copy-contact" data-copy="harsh3211yt@gmail.com" data-label="Gmail address" aria-label="Copy Gmail address harsh3211yt@gmail.com">' +
+                    '<span>✉️ Gmail: <strong>harsh3211yt@gmail.com</strong></span>' +
+                  '</button>' +
+                '</div>' +
+              '</div>' +
+              '<button type="button" class="candy-btn pink" data-action="send-smile">' +
+                'send a smile back 😊' +
+              '</button>' +
+              '<div id="smile-counter-text" class="smile-counter" aria-live="polite">' +
+                'smiles sent back: ' + smilesCount +
+              '</div>' +
+              '<div class="nav-strip">' +
+                '<button type="button" class="candy-btn secondary" data-action="go-scene" data-target="HUB">← Gift Hub</button>' +
+                '<button type="button" class="candy-btn secondary" data-action="replay">Replay Experience ↺</button>' +
+              '</div>' +
+            '</div>';
+          announceScene('Final note from a well-wisher.');
+          focusSceneHeading();
+        }
+      }
+
+      /* =====================================================================
+       * 7. CANDLE IN-PLACE UPDATE & BLOW HANDLERS (No scene jump!)
+       * ===================================================================== */
+      function updateCandleDOMInPlace(idx) {
+        if (!candlesLit[idx]) return;
+        candlesLit[idx] = false;
+        playSfx('puff');
+
+        const btn = stageEl.querySelector('.candle-btn[data-index="' + idx + '"]');
+        if (btn) {
+          btn.classList.add('is-out');
+          btn.setAttribute('aria-label', 'Wish candle ' + (idx + 1) + ' blown out');
+        }
+
+        const litCount = candlesLit.filter(Boolean).length;
+        const labelEl = document.getElementById('blow-btn-label');
+        if (labelEl && litCount > 0) {
+          labelEl.textContent = 'Hold to Blow Candles 💨 (' + litCount + ' left)';
+        }
+
+        if (litCount === 0) {
+          wishSealed = true;
+          const statusEl = document.getElementById('wish-status-line');
+          if (statusEl) {
+            statusEl.textContent = 'Wish sealed ✨ may it come true';
+          }
+          const controlsWrap = document.getElementById('blow-controls-wrap');
+          if (controlsWrap) {
+            controlsWrap.innerHTML = '<button type="button" class="candy-btn secondary" data-action="relight-candles">Relight Candles 🔥</button>';
+          }
+          spawnCelebrationBurst(32, 'all');
+          setTimeout(function () { playSfx('fanfare'); }, 150);
+        }
+      }
+
+      function extinguishAllRemainingCandlesSequentially() {
+        let delay = 0;
+        for (let i = 0; i < 7; i++) {
+          if (candlesLit[i]) {
+            (function (idx, d) {
+              setTimeout(function () {
+                if (currentScene === 'GIFT2' && candlesLit[idx]) {
+                  updateCandleDOMInPlace(idx);
+                }
+              }, d);
+            })(i, delay);
+            delay += 110;
+          }
+        }
+      }
+
+      function bindBlowButtonEvents() {
+        const blowBtn = document.getElementById('blow-hold-btn');
+        const fillEl = document.getElementById('blow-progress-fill');
+        if (!blowBtn || !fillEl) return;
+
+        function stopHold() {
+          if (holdBlowInterval) {
+            clearInterval(holdBlowInterval);
+            holdBlowInterval = null;
+          }
+          holdProgress = 0;
+          if (fillEl) fillEl.style.width = '0%';
+        }
+
+        function startHold() {
+          startMusicLoopIfReady();
+          stopHold();
+          const startTime = Date.now();
+          holdBlowInterval = setInterval(function () {
+            const elapsed = Date.now() - startTime;
+            holdProgress = Math.min(100, (elapsed / 1000) * 100);
+            fillEl.style.width = holdProgress + '%';
+            const targetOut = Math.floor((holdProgress / 100) * 7);
+            const currentOut = candlesLit.filter(function (c) { return !c; }).length;
+            if (targetOut > currentOut) {
+              const nextIdx = candlesLit.findIndex(Boolean);
+              if (nextIdx !== -1) updateCandleDOMInPlace(nextIdx);
+            }
+            if (holdProgress >= 100) {
+              stopHold();
+              extinguishAllRemainingCandlesSequentially();
+            }
+          }, 50);
+        }
+
+        blowBtn.addEventListener('pointerdown', function (e) {
+          if (e.pointerType === 'mouse' && e.button !== 0) return;
+          startHold();
+        });
+        blowBtn.addEventListener('pointerup', stopHold);
+        blowBtn.addEventListener('pointerleave', stopHold);
+        blowBtn.addEventListener('pointercancel', stopHold);
+
+        blowBtn.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            startMusicLoopIfReady();
+            extinguishAllRemainingCandlesSequentially();
+          }
+        });
+      }
+
+      /* =====================================================================
+       * 8. DELEGATED STAGE INTERACTION HANDLERS
+       * ===================================================================== */
+      stageEl.addEventListener('click', function (e) {
+        startMusicLoopIfReady();
+        const target = e.target.closest('[data-action]');
+        if (!target) return;
+
+        const action = target.getAttribute('data-action');
+
+        if (action === 'mascot-tap') {
+          mascotTapCount++;
+          const svgEl = target.querySelector('.mascot-svg');
+          if (mascotTapCount >= 5) {
+            mascotTapCount = 0;
+            if (svgEl) {
+              svgEl.classList.remove('mascot-spin');
+              void svgEl.offsetWidth;
+              svgEl.classList.add('mascot-spin');
+            }
+            playSfx('sparkle');
+            showToast("okay okay I'm dancing as fast as I can 🕺");
+          } else {
+            playSfx('pop');
+          }
+          return;
+        }
+
+        if (action === 'intro-yes') {
+          playSfx('pop');
+          renderScene('EXCITED');
+          return;
+        }
+
+        if (action === 'intro-no') {
+          noCount++;
+          if (noCount > 2) {
+            playSfx('pop');
+            const offsetX = (Math.random() > 0.5 ? 1 : -1) * (45 + Math.floor(Math.random() * 40));
+            const offsetY = (Math.random() > 0.5 ? 1 : -1) * (16 + Math.floor(Math.random() * 18));
+            target.style.transform = 'translate(' + offsetX + 'px, ' + offsetY + 'px) scale(0.72)';
+            target.textContent = 'YES 👉';
+            showToast('That button refuses to cooperate anymore 😜');
+            return;
+          }
+          playSfx('wah');
+          renderScene('NO_GAG');
+          return;
+        }
+
+        if (action === 'try-again') {
+          playSfx('pop');
+          renderScene('INTRO');
+          return;
+        }
+
+        if (action === 'excited-yes') {
+          playSfx('sparkle');
+          spawnCelebrationBurst(20, 'all');
+          renderScene('BALLOON_POP');
+          return;
+        }
+
+        // In-place balloon pop — ZERO scene jump or refresh!
+        if (action === 'pop-balloon') {
+          const idx = parseInt(target.getAttribute('data-index') || '0', 10);
+          if (poppedBalloons[idx]) return;
+          poppedBalloons[idx] = true;
+          target.classList.add('is-popped');
+          const bData = BALLOON_BLESSINGS_DATA[idx];
+          if (bData) {
+            target.setAttribute('aria-label', 'Birthday balloon ' + (idx + 1) + ': ' + bData.label + ' (popped)');
+          }
+          playSfx('pop');
+          spawnCelebrationBurst(10, 'all');
+
+          const poppedCount = getPoppedBalloonsCount();
+          const statusEl = document.getElementById('balloon-status-line');
+          const continueBtn = document.getElementById('balloon-continue-btn');
+          const popAllBtn = stageEl.querySelector('[data-action="pop-all-balloons"]');
+
+          if (poppedCount === 5) {
+            if (statusEl) statusEl.textContent = 'All 5 birthday blessings unlocked for Akshita! 🎉';
+            if (continueBtn) continueBtn.classList.add('mint');
+            if (popAllBtn) popAllBtn.textContent = 'Reset Balloons 🎈';
+            setTimeout(function () { playSfx('fanfare'); }, 120);
+          } else if (statusEl) {
+            statusEl.textContent = 'Tap each balloon to pop it & reveal a birthday blessing (' + poppedCount + '/5 popped) 🎈';
+          }
+          return;
+        }
+
+        if (action === 'pop-all-balloons') {
+          const allCurrentlyPopped = getPoppedBalloonsCount() === 5;
+          const nextState = !allCurrentlyPopped;
+          [0, 1, 2, 3, 4].forEach(function (i) {
+            poppedBalloons[i] = nextState;
+            const slot = stageEl.querySelector('.balloon-pop-slot[data-index="' + i + '"]');
+            if (slot) {
+              slot.classList.toggle('is-popped', nextState);
+            }
+          });
+          const statusEl = document.getElementById('balloon-status-line');
+          const continueBtn = document.getElementById('balloon-continue-btn');
+          if (nextState) {
+            if (statusEl) statusEl.textContent = 'All 5 birthday blessings unlocked for Akshita! 🎉';
+            if (continueBtn) continueBtn.classList.add('mint');
+            target.textContent = 'Reset Balloons 🎈';
+            playSfx('fanfare');
+            spawnCelebrationBurst(20, 'all');
+          } else {
+            if (statusEl) statusEl.textContent = 'Tap each balloon to pop it & reveal a birthday blessing (0/5 popped) 🎈';
+            if (continueBtn) continueBtn.classList.remove('mint');
+            target.textContent = 'Pop All 5 ✨';
+            playSfx('pop');
+          }
+          return;
+        }
+
+        if (action === 'open-gift') {
+          const giftNum = parseInt(target.getAttribute('data-gift') || '1', 10);
+          openedGifts[giftNum] = true;
+          playSfx('sparkle');
+          spawnCelebrationBurst(20, 'all');
+          renderScene('GIFT' + giftNum);
+          return;
+        }
+
+        if (action === 'toggle-candle') {
+          const idx = parseInt(target.getAttribute('data-index') || '0', 10);
+          updateCandleDOMInPlace(idx);
+          return;
+        }
+
+        if (action === 'relight-candles') {
+          candlesLit = [true, true, true, true, true, true, true];
+          wishSealed = false;
+          playSfx('pop');
+          renderScene('GIFT2');
+          return;
+        }
+
+        // In-place 3D polaroid flip — ZERO scene refresh or jumping!
+        if (action === 'flip-wish') {
+          const idx = parseInt(target.getAttribute('data-index') || '0', 10);
+          flippedWishes[idx] = !flippedWishes[idx];
+          const isNowFlipped = flippedWishes[idx];
+          target.classList.toggle('is-flipped', isNowFlipped);
+          const backTitle = target.getAttribute('data-back-title') || '';
+          target.setAttribute(
+            'aria-label',
+            'Polaroid ' + (idx + 1) + ': ' + backTitle + (isNowFlipped ? ' (flipped)' : ' (tap to flip)')
+          );
+          playSfx('pop');
+          return;
+        }
+
+        if (action === 'flip-all-wishes') {
+          const allFlipped = [0, 1, 2, 3, 4].every(function (i) { return flippedWishes[i]; });
+          const nextState = !allFlipped;
+          [0, 1, 2, 3, 4].forEach(function (i) {
+            flippedWishes[i] = nextState;
+            const slot = stageEl.querySelector('.wish-card-slot[data-index="' + i + '"]');
+            if (slot) {
+              slot.classList.toggle('is-flipped', nextState);
+              const backTitle = slot.getAttribute('data-back-title') || '';
+              slot.setAttribute(
+                'aria-label',
+                'Polaroid ' + (i + 1) + ': ' + backTitle + (nextState ? ' (flipped)' : ' (tap to flip)')
+              );
+            }
+          });
+          playSfx('sparkle');
+          return;
+        }
+
+        // In-place Wish Jar star collection — ZERO scene jump or refresh!
+        if (action === 'collect-star') {
+          const idx = parseInt(target.getAttribute('data-index') || '0', 10);
+          const stData = WISH_JAR_STARS_DATA[idx];
+          collectedStars[idx] = true;
+          target.classList.add('is-collected');
+          if (stData) {
+            target.innerHTML = '<span>✓ ' + stData.tag + '</span>';
+            activeStarFortune = stData.fortune;
+          }
+          const jarStar = document.getElementById('jar-star-' + idx);
+          if (jarStar) {
+            jarStar.classList.add('is-lit');
+          }
+          const fortuneBox = document.getElementById('jar-fortune-box');
+          if (fortuneBox) {
+            fortuneBox.textContent = activeStarFortune;
+          }
+          const starCount = getCollectedStarsCount();
+          const statusEl = document.getElementById('jar-status-line');
+          if (starCount === 5) {
+            if (statusEl) statusEl.textContent = "All 5 glowing wishes sealed inside Akshita's jar! 🌟";
+            playSfx('fanfare');
+            spawnCelebrationBurst(24, 'all');
+          } else {
+            if (statusEl) statusEl.textContent = 'Tap each star below to bottle up 5 birthday fortunes (' + starCount + '/5 in jar)';
+            playSfx('sparkle');
+          }
+          return;
+        }
+
+        if (action === 'collect-all-stars') {
+          [0, 1, 2, 3, 4].forEach(function (i) {
+            collectedStars[i] = true;
+            const btn = stageEl.querySelector('.star-token-btn[data-index="' + i + '"]');
+            if (btn && WISH_JAR_STARS_DATA[i]) {
+              btn.classList.add('is-collected');
+              btn.innerHTML = '<span>✓ ' + WISH_JAR_STARS_DATA[i].tag + '</span>';
+            }
+            const jarStar = document.getElementById('jar-star-' + i);
+            if (jarStar) {
+              jarStar.classList.add('is-lit');
+            }
+          });
+          activeStarFortune = WISH_JAR_STARS_DATA[4].fortune;
+          const fortuneBox = document.getElementById('jar-fortune-box');
+          if (fortuneBox) fortuneBox.textContent = activeStarFortune;
+          const statusEl = document.getElementById('jar-status-line');
+          if (statusEl) statusEl.textContent = "All 5 glowing wishes sealed inside Akshita's jar! 🌟";
+          playSfx('fanfare');
+          spawnCelebrationBurst(24, 'all');
+          return;
+        }
+
+        if (action === 'envelope-tap') {
+          if (currentMode === 'EARLY') {
+            playSfx('pop');
+            target.classList.remove('shake');
+            void target.offsetWidth;
+            target.classList.add('shake');
+            showToast('Wax-sealed until 19 NOV 🤫 Come back on your birthday!');
+          } else {
+            playSfx('wax');
+            spawnCelebrationBurst(32, 'all');
+            document.getElementById('envelope-modal').classList.add('open');
+          }
+          return;
+        }
+
+        if (action === 'go-scene') {
+          const dest = target.getAttribute('data-target') || 'HUB';
+          playSfx('pop');
+          renderScene(dest);
+          return;
+        }
+
+        if (action === 'copy-contact') {
+          const val = target.getAttribute('data-copy') || '';
+          const label = target.getAttribute('data-label') || 'Contact';
+          playSfx('pop');
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(val).then(function () {
+              showToast('Copied ' + label + ': ' + val + ' ✨');
+            }).catch(function () {
+              showToast(label + ': ' + val);
+            });
+          } else {
+            showToast(label + ': ' + val);
+          }
+          return;
+        }
+
+        if (action === 'send-smile') {
+          smilesCount++;
+          safeSetLS('smiles', smilesCount);
+          playSfx('smile');
+          spawnCelebrationBurst(30, 'hearts');
+          const counterEl = document.getElementById('smile-counter-text');
+          if (counterEl) {
+            counterEl.textContent = 'smiles sent back: ' + smilesCount;
+          }
+          showToast('Smile received! 😊💛');
+          return;
+        }
+
+        if (action === 'replay') {
+          playSfx('pop');
+          noCount = 0;
+          poppedBalloons = { 0: false, 1: false, 2: false, 3: false, 4: false };
+          openedGifts = { 1: false, 2: false, 3: false, 4: false };
+          candlesLit = [true, true, true, true, true, true, true];
+          wishSealed = false;
+          flippedWishes = { 0: false, 1: false, 2: false, 3: false, 4: false };
+          collectedStars = { 0: false, 1: false, 2: false, 3: false, 4: false };
+          activeStarFortune = "Tap any glowing star token above to drop it into Akshita's 19 NOV Wish Jar ✨";
+          renderScene('INTRO');
+        }
+      });
+
+      stageEl.addEventListener('pointerover', function (e) {
+        if (currentScene !== 'INTRO' || noCount < 2) return;
+        const noBtn = e.target.closest('#intro-no-btn');
+        if (!noBtn) return;
+        const dx = (Math.random() > 0.5 ? 1 : -1) * (40 + Math.floor(Math.random() * 40));
+        const dy = (Math.random() > 0.5 ? 1 : -1) * (12 + Math.floor(Math.random() * 18));
+        noBtn.style.transform = 'translate(' + dx + 'px, ' + dy + 'px) scale(0.75)';
+      });
+
+      stageEl.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          const mascot = e.target.closest('[data-action="mascot-tap"]');
+          if (mascot) {
+            e.preventDefault();
+            mascot.click();
+          }
+        }
+      });
+
+      document.getElementById('close-envelope-modal').addEventListener('click', function () {
+        playSfx('pop');
+        document.getElementById('envelope-modal').classList.remove('open');
+      });
+
+      /* =====================================================================
+       * 9. OPTIONAL CREATOR MODE (#creator OR 5x TAP ON TOP PORTRAIT PILL)
+       * ===================================================================== */
+      let logoTapCount = 0;
+      let logoTapTimer = null;
+      const creatorModal = document.getElementById('creator-modal');
+      const creatorPreviewBox = document.getElementById('creator-preview-box');
+      const fileInput = document.getElementById('creator-file-input');
+
+      function refreshCreatorPreview() {
+        if (creatorPreviewBox) {
+          creatorPreviewBox.innerHTML = getPortraitMarkup();
+        }
+        renderTopLogoAvatar();
+      }
+
+      function openCreatorModal() {
+        refreshCreatorPreview();
+        creatorModal.classList.add('open');
+      }
+
+      function closeCreatorModal() {
+        creatorModal.classList.remove('open');
+        if (window.location.hash === '#creator') {
+          history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+      }
+
+      ribbonPillEl.addEventListener('click', function () {
+        startMusicLoopIfReady();
+        logoTapCount++;
+        clearTimeout(logoTapTimer);
+        logoTapTimer = setTimeout(function () {
+          logoTapCount = 0;
+        }, 1800);
+        if (logoTapCount >= 5) {
+          logoTapCount = 0;
+          playSfx('sparkle');
+          openCreatorModal();
+        }
+      });
+
+      window.addEventListener('hashchange', function () {
+        if (window.location.hash === '#creator') {
+          openCreatorModal();
+        }
+      });
+
+      if (window.location.hash === '#creator') {
+        openCreatorModal();
+      }
+
+      fileInput.addEventListener('change', function (e) {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (ev) {
+          const dataUri = String(ev.target.result || '');
+          if (dataUri.startsWith('data:image/')) {
+            activePhotoDataUri = dataUri;
+            safeSetLS('photo', dataUri);
+            refreshCreatorPreview();
+            if (currentScene === 'GIFT1' || currentScene === 'GIFT3' || currentScene === 'FINALE' || currentScene === 'HEART') {
+              renderScene(currentScene);
+            }
+            showToast('Photo updated ✨');
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+
+      document.getElementById('remove-photo-btn').addEventListener('click', function () {
+        activePhotoDataUri = defaultBakedUri;
+        safeRemoveLS('photo');
+        fileInput.value = '';
+        refreshCreatorPreview();
+        if (currentScene === 'GIFT1' || currentScene === 'GIFT3' || currentScene === 'FINALE' || currentScene === 'HEART') {
+          renderScene(currentScene);
+        }
+        showToast('Restored pre-built Akshita portrait ✨');
+      });
+
+      document.getElementById('close-creator-btn').addEventListener('click', closeCreatorModal);
+
+      document.getElementById('bake-download-btn').addEventListener('click', function () {
+        const clone = document.documentElement.cloneNode(true);
+        const cloneSlot = clone.querySelector('#baked-photo-slot');
+        if (cloneSlot) {
+          cloneSlot.textContent = activePhotoDataUri || defaultBakedUri || '';
+        }
+        const cloneCreatorModal = clone.querySelector('#creator-modal');
+        if (cloneCreatorModal) {
+          cloneCreatorModal.remove();
+        }
+        const cloneEnvModal = clone.querySelector('#envelope-modal');
+        if (cloneEnvModal) {
+          cloneEnvModal.classList.remove('open');
+        }
+        const cloneStage = clone.querySelector('#stage-card');
+        if (cloneStage) {
+          cloneStage.innerHTML = '';
+        }
+        const serialized = '<!doctype html>\n' + clone.outerHTML;
+        const blob = new Blob([serialized], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'happy-birthday-akshita.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+        playSfx('fanfare');
+        showToast('Downloaded happy-birthday-akshita.html 🎁');
+      });
+
+      /* =====================================================================
+       * 10. INITIALIZATION & SINGLE 1s INTERVAL
+       * ===================================================================== */
+      updateRibbonUI();
+      setInterval(updateRibbonUI, 1000);
+
+      if (currentMode === 'DAY') {
+        continuousRain = true;
+        spawnCelebrationBurst(28, 'all');
+      }
+
+      const autostart = urlParams.get('autostart') === '1';
+      renderScene('WRAP');
+      setTimeout(function () {
+        if (currentScene === 'WRAP') {
+          renderScene('INTRO');
+        }
+      }, autostart ? 40 : 900);
+    })();
+  </script>
+</body>
+</html>
